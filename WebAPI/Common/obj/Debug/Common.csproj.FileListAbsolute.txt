@@ -1,0 +1,6 @@
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\Common\bin\Debug\Common.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\Common\bin\Debug\Common.pdb
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\Common\obj\Debug\Common.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\Common\obj\Debug\Common.pdb
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache

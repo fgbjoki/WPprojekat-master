@@ -1,0 +1,103 @@
+<div class="container">
+  <h1 class="page-header">Modify</h1>
+  <div class="row">
+    <div class="col-md-3">
+      <form (ngSubmit)="onModify()" #f="ngForm">
+        <div id="user-data">
+          <div class="form-group">
+            <label for="firstname">Firstname</label>
+            <input
+              type="text"
+              id="firstname"
+              class="form-control"
+              [(ngModel)] = "tempFirstname"
+              name="firstname"
+              required
+              #firstname="ngModel">
+          </div>
+          <span class="help-block" *ngIf="!firstname.valid && firstname.touched">Please enter your Firstname</span>
+          <div class="form-group">
+            <label for="lastname">Lastname</label>
+            <input
+              type="text"
+              id="lastname"
+              class="form-control"
+              [(ngModel)] = "tempLastname"
+              name="lastname"
+              required
+              #lastname="ngModel"
+            >
+            <span class="help-block" *ngIf="!lastname.valid && lastname.touched">Please enter your Lastname</span>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              class="form-control"
+              [(ngModel)] = "tempUsername"
+              name="username"
+              required
+              #username="ngModel">
+            <span class="help-block" *ngIf="!username.valid && username.touched">Please enter your Username</span>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              [(ngModel)] = "tempPassword"
+              name="password"
+              required
+              #password="ngModel">
+            <span class="help-block" *ngIf="!password.valid && password.touched">Please enter your Password</span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              class="form-control"
+              [(ngModel)] = "tempEmail"
+              email
+              required
+              #email="ngModel">
+            <span class="help-block" *ngIf="!email.valid && email.touched">Please enter your email</span>
+          </div>
+          <div class="form-group">
+            <label for="jmbg">JMBG</label>
+            <input
+              type="text"
+              id="jmbg"
+              class="form-control"
+              [(ngModel)] = "tempJMBG"
+              name="jmbg"
+              required
+              #jmbg="ngModel">
+            <span class="help-block" *ngIf="!jmbg.valid && jmbg.touched">Please enter your JMBG</span>
+          </div>
+          <div class="form-group">
+            <label for="mpNumber">Mobilephone number</label>
+            <input
+              type="text"
+              id="mpNumber"
+              class="form-control"
+              [(ngModel)] = "tempMobilePhoneNumber"
+              name="mpNumber"
+              required
+              #mpNumber="ngModel">
+            <span class="help-block" *ngIf="!mpNumber.valid && mpNumber.touched">Please enter your Mobilephone number</span>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="!f.valid"
+          >Modify</button>
+      </form>
+    </div>
+  </div>
+</div>

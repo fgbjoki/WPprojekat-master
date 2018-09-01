@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-xs-12">
+    <form (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-6">
+          <button type="submit" class="btn btn-success">Save</button>
+          <button type="button" class="btn btn-danger" style="margin-left: 50px" routerLink="">Cancel</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label>{{startAddress}}</label>
+            <agm-map [latitude]="marker.lat" [longitude]="marker.lng" (mapClick)="onClickMap($event)" [zoom]="14">
+              <agm-marker
+                [latitude]="marker.lat"
+                [longitude]="marker.lng"
+                [label]="marker.label"
+                id="gmApi"
+                *ngIf="marker.locationChoosen"
+                ></agm-marker>
+            </agm-map>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="status">Status</label>
+            <input
+              id="status"
+              [disabled]="selectedRideStatus !== 'Create'"
+              [value]="selectedRideStatus == undefined ? 'Create' : selectedRideStatus">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="carType">Vehicle type</label>
+            <select
+              id="carType"
+              [disabled]="editMode"
+              #CARTYPE>
+              <option *ngFor="let vehicle of vehicleType"
+                [value]="vehicle"
+                >{{vehicle}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

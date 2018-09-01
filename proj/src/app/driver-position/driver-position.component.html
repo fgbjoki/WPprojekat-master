@@ -1,0 +1,24 @@
+<label>Current address: {{startAddress}}</label>
+<br/>
+<label>Wanted address: {{wantedAddress}}</label>
+<br/>
+<button type="submit" class="btn btn-success"
+        [disabled]="marker.lat === wantedMarker.lat && marker.lng === wantedMarker.lng"
+        (click)="OnChangeAddress()">Change Address</button>
+<agm-map [latitude]="marker.lat" [longitude]="marker.lng" (mapClick)="onClickMap($event)" [zoom]="14">
+  <agm-marker
+    [latitude]="marker.lat"
+    [longitude]="marker.lng"
+    [label]="marker.label"
+    id="gmApi1"
+    *ngIf="marker.locationChoosen"
+  ></agm-marker>
+  <agm-marker
+    [latitude]="wantedMarker.lat"
+    [longitude]="wantedMarker.lng"
+    [label]="wantedMarker.label"
+    id="gmApi2"
+    *ngIf="wantedMarker.locationChoosen"
+  ></agm-marker>
+</agm-map>
+asdasd

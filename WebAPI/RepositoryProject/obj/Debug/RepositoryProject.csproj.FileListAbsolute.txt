@@ -1,0 +1,9 @@
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\RepositoryProject.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\RepositoryProject.pdb
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\Common.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\Common.pdb
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.csprojResolveAssemblyReference.cache
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.csproj.CoreCompileInputs.cache
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.csproj.CopyComplete
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.pdb

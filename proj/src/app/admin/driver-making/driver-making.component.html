@@ -1,0 +1,173 @@
+<form (ngSubmit)="OnSubmit()" #f="ngForm">
+  <div class="row">
+    <div class="col-md-6">
+      <h1 class="page-header">Create Driver</h1>
+      <div class="row">
+        <div class="col-md-7">
+            <div id="user-data">
+              <div class="form-group">
+                <label for="firstname">Firstname</label>
+                <input
+                  type="text"
+                  id="firstname"
+                  class="form-control"
+                  ngModel
+                  name="firstname"
+                  required
+                  #firstname="ngModel">
+              </div>
+              <span class="help-block" *ngIf="!firstname.valid && firstname.touched">Please enter your Firstname</span>
+              <div class="form-group">
+                <label for="lastname">Lastname</label>
+                <input
+                  type="text"
+                  id="lastname"
+                  class="form-control"
+                  ngModel
+                  name="lastname"
+                  required
+                  #lastname="ngModel"
+                >
+                <span class="help-block" *ngIf="!lastname.valid && lastname.touched">Please enter your Lastname</span>
+              </div>
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                  type="text"
+                  id="username"
+                  class="form-control"
+                  ngModel
+                  name="username"
+                  required
+                  #username="ngModel">
+                <span class="help-block" *ngIf="!username.valid && username.touched">Please enter your Username</span>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  ngModel
+                  name="password"
+                  required
+                  #password="ngModel">
+                <span class="help-block" *ngIf="!password.valid && password.touched">Please enter your Password</span>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  ngModel
+                  email
+                  required
+                  #email="ngModel">
+                <span class="help-block" *ngIf="!email.valid && email.touched">Please enter your email</span>
+              </div>
+              <div class="form-group">
+                <label for="jmbg">JMBG</label>
+                <input
+                  type="text"
+                  id="jmbg"
+                  class="form-control"
+                  ngModel
+                  name="jmbg"
+                  required
+                  #jmbg="ngModel">
+                <span class="help-block" *ngIf="!jmbg.valid && jmbg.touched">Please enter your JMBG</span>
+              </div>
+              <div class="form-group">
+                <label for="mpNumber">Mobilephone number</label>
+                <input
+                  type="text"
+                  id="mpNumber"
+                  class="form-control"
+                  ngModel
+                  name="mpNumber"
+                  required
+                  #mpNumber="ngModel">
+                <span class="help-block" *ngIf="!mpNumber.valid && mpNumber.touched">Please enter your Mobilephone number</span>
+              </div>
+              <div class="radio" *ngFor="let gender of genders; let i = index">
+                <label>
+                  <input
+                    ngModel
+                    type="radio"
+                    name="gender"
+                    [value]="gender"
+                    (change)="onSelectGender(gender)"
+                    required
+                  >
+                  {{gender}}
+                </label>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <h1 class="page-header">Ride</h1>
+        <div class="col-md-5">
+            <div id="ride-data">
+              <div class="form-group">
+                <label for="year">Year</label>
+                <input
+                  type="text"
+                  id="year"
+                  class="form-control"
+                  ngModel
+                  name="year"
+                  required
+                  #year="ngModel">
+              </div>
+              <span class="help-block" *ngIf="!year.valid && year.touched">Please enter vehicles year</span>
+              <div class="form-group">
+                <label for="licencePlate">Licence plate</label>
+                <input
+                  type="text"
+                  id="licencePlate"
+                  class="form-control"
+                  ngModel
+                  name="licencePlate"
+                  required
+                  #licencePlate="ngModel"
+                >
+                <span class="help-block" *ngIf="!licencePlate.valid && licencePlate.touched">Please enter your Lastname</span>
+              </div>
+              <div class="form-group">
+                <label for="taxiID">Taxi ID</label>
+                <input
+                  type="text"
+                  id="taxiID"
+                  class="form-control"
+                  ngModel
+                  name="taxiID"
+                  required
+                  #taxiID="ngModel">
+                <span class="help-block" *ngIf="!taxiID.valid && taxiID.touched">Please enter your Username</span>
+              </div>
+            </div>
+          <div class="form-group">
+            <label for="carType">Vehicle type</label>
+            &nbsp;
+            <select
+              id="carType"
+              #CARTYPE>
+              <option *ngFor="let vehicle of vehicleType"
+                      [value]="vehicle"
+              >{{vehicle}}</option>
+            </select>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <button
+    type="submit"
+    class="btn btn-primary"
+    [disabled]="!f.valid">Create</button>
+</form>

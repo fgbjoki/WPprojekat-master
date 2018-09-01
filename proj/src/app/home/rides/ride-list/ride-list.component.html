@@ -1,0 +1,17 @@
+<div class="container">
+  <br>
+  <div class="row">
+    <div class="col-xs-12">
+      <button *ngIf="myGlobal.myUser.accessLevel === 1" class="btn btn-success" (click)="onNewRide()">New Ride</button>
+    </div>
+    <hr>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">
+      <app-ride-item
+        *ngFor="let rideEl of rides; let i = index"
+        [ride]="rideEl"
+        [index]="i"></app-ride-item>
+    </div>
+  </div>
+</div>
