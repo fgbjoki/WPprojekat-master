@@ -3,8 +3,8 @@
 
   </div>
 </div>
-<div class="row">
-  <button type="button" class="btn btn-warning" [hidden]="myGlobals.myUser.accessLevel !== 1 || ride.rideStatus === 4"><a [routerLink]="'edit'">Modify</a></button>
+<div class="row" [hidden]="isHidden()">
+  <button type="button" class="btn btn-warning"><a [routerLink]="'edit'">Modify</a></button>
 </div>
 <div class="row">
   <div class="col-xs-12">

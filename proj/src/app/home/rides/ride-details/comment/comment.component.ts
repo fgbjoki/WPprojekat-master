@@ -38,16 +38,13 @@ export class CommentComponent implements OnInit {
 
     if (this.myGlobals.myUser.accessLevel === 2) {
       if (this.rideStatus === 5) {
-        if (this.descriptionInput === '') {
+        if (this.comment.Description === '') {
           this.disabled = false;
         }
       }
     } else if (this.myGlobals.myUser.accessLevel === 1) {
-      console.log('my drive');
       if (this.rideStatus === 4 || this.rideStatus === 6) {
-        console.log('ridestatus OK')
         if (this.comment.Description === '') {
-          console.log('enabled');
           this.disabled = false;
         }
       }

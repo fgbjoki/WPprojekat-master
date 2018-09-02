@@ -24,15 +24,25 @@ export class RideDetailsComponent implements OnInit {
               public myGlobals: Globals) {
   }
 
+  isHidden(): boolean {
+    var returnValue = true;
+    if (this.myGlobals.myUser.accessLevel === 1) {
+      if (this.ride.rideStatus === 0) {
+        returnValue = false;
+      }
+    }
+    return returnValue;
+  }
+
   ngOnInit() {
+    console.log('access: ' + this.myGlobals.myUser.accessLevel);
     this.route.params
       .subscribe(
         (params: Params) => {
           this.id = +params['id'];
           this.ride = this.rideService.getRide(this.id);
           this.rideStatus = '';
-           console.log('selected id: ' + this.id);
-           console.log('selected ride status: ' + this.ride.startLocation.streetName);
+           console.log('selected ride status: ' + this.ride.rideStatus);
           switch (this.ride.rideStatus) {
             case RideStatus.created:
               this.rideStatus = 'Created';

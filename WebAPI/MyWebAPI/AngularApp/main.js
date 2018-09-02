@@ -1155,17 +1155,14 @@ var CommentComponent = /** @class */ (function () {
         console.log('[debug] rideStatus: ' + this.rideStatus);
         if (this.myGlobals.myUser.accessLevel === 2) {
             if (this.rideStatus === 5) {
-                if (this.descriptionInput === '') {
+                if (this.comment.Description === '') {
                     this.disabled = false;
                 }
             }
         }
         else if (this.myGlobals.myUser.accessLevel === 1) {
-            console.log('my drive');
             if (this.rideStatus === 4 || this.rideStatus === 6) {
-                console.log('ridestatus OK');
                 if (this.comment.Description === '') {
-                    console.log('enabled');
                     this.disabled = false;
                 }
             }
@@ -1287,7 +1284,7 @@ module.exports = "agm-map {\r\n  height: 100px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\">\n  <button type=\"button\" class=\"btn btn-warning\" [hidden]=\"myGlobals.myUser.accessLevel !== 1\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus !== 0 && ride.rideStatus !== 1\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus !== 0 && ride.rideStatus !== 1\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1328,15 +1325,24 @@ var RideDetailsComponent = /** @class */ (function () {
         this.myGlobals = myGlobals;
         this.rideStatus = '';
     }
+    RideDetailsComponent.prototype.isHidden = function () {
+        var returnValue = true;
+        if (this.myGlobals.myUser.accessLevel === 1) {
+            if (this.ride.rideStatus === 0) {
+                returnValue = false;
+            }
+        }
+        return returnValue;
+    };
     RideDetailsComponent.prototype.ngOnInit = function () {
         var _this = this;
+        console.log('access: ' + this.myGlobals.myUser.accessLevel);
         this.route.params
             .subscribe(function (params) {
             _this.id = +params['id'];
             _this.ride = _this.rideService.getRide(_this.id);
             _this.rideStatus = '';
-            console.log('selected id: ' + _this.id);
-            console.log('selected ride status: ' + _this.ride.startLocation.streetName);
+            console.log('selected ride status: ' + _this.ride.rideStatus);
             switch (_this.ride.rideStatus) {
                 case _models_ride_status__WEBPACK_IMPORTED_MODULE_3__["RideStatus"].created:
                     _this.rideStatus = 'Created';
