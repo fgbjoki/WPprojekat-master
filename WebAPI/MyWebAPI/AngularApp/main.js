@@ -570,23 +570,38 @@ var RideMakingComponent = /** @class */ (function () {
             });
         });
     };
+    RideMakingComponent.prototype.convertToVehicleType = function () {
+        var carType = _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].not_defined;
+        switch (this.vehicleSelected.nativeElement.value) {
+            case 'Car':
+                carType = _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].car;
+                break;
+            case 'Van':
+                carType = _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].van;
+                break;
+        }
+        return carType;
+    };
     RideMakingComponent.prototype.addAllDrivers = function (data) {
         for (var i = 0; i < data.drivers.length; ++i) {
-            this.drivers.push(new _driver_model__WEBPACK_IMPORTED_MODULE_2__["DriverModel"](data.drivers[i].ID, data.drivers[i].Username, data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
+            if (data.drivers[i].Vehicle.VehicleType === this.convertToVehicleType() || this.convertToVehicleType() === _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].not_defined) {
+                this.drivers.push(new _driver_model__WEBPACK_IMPORTED_MODULE_2__["DriverModel"](data.drivers[i].ID, data.drivers[i].Username, data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
+            }
         }
     };
     RideMakingComponent.prototype.addIfNotExist = function (data) {
         // ako postoji uzmi mu lokaciju ako ne postoji brisi ga... jer je zauzet
         for (var i = 0; i < this.drivers.length; ++i) {
             var exists = false;
-            for (var j = 0; j < data.drivers.length; ++j) {
+            var j = void 0;
+            for (j = 0; j < data.drivers.length; ++j) {
                 if (this.drivers[i].DriverID === data.drivers[j].ID) {
                     this.drivers[i].Location = data.drivers[j].Location;
                     exists = true;
                     break;
                 }
             }
-            if (exists === false) {
+            if (exists === false || (data.drivers[j].Vehicle.VehicleType !== this.convertToVehicleType() && this.convertToVehicleType() !== _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].not_defined)) {
                 this.drivers.splice(i, 1);
             }
         }
@@ -599,13 +614,18 @@ var RideMakingComponent = /** @class */ (function () {
                     break;
                 }
             }
-            if (exists === false) {
+            if (exists === false &&
+                (data.drivers[i].Vehicle.VehicleType === this.convertToVehicleType() || this.convertToVehicleType() === _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].not_defined)) {
                 this.drivers.push(data.drivers[i]);
             }
         }
     };
     RideMakingComponent.prototype.onSubmit = function () {
         var _this = this;
+        if (this.driverSelected.nativeElement.value === '' || this.driverSelected.nativeElement.value == null) {
+            console.log('TODO, Feedback on HAVE TO SELECT driver');
+            return;
+        }
         var carType = _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].not_defined;
         switch (this.vehicleSelected.nativeElement.value) {
             case 'Car':
@@ -1666,7 +1686,7 @@ module.exports = "agm-map {\r\n  height: 100px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus > 2\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n\n<!-- Admin part -->\n<div class=\"row\" *ngIf=\"ride.rideStatus === 0 && myGlobals.myUser.accessLevel === 3\">\n  <div class=\"col-xs-6\">\n    <div class=\"form-group\">\n      <label for=\"driver\">Drivers</label> &nbsp;\n      <select\n        id=\"driver\"\n        #driver>\n        <option\n          *ngFor=\"let d of drivers\" [ngValue]=\"d\">{{d.Username}}</option>\n      </select>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus > 2\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n\n<!-- Admin part -->\n<div class=\"row\" *ngIf=\"ride.rideStatus === 0 && myGlobals.myUser.accessLevel === 3\">\n  <div class=\"col-xs-6\">\n    <div class=\"form-group\">\n      <label for=\"driver\">Drivers</label> &nbsp;\n      <select\n        id=\"driver\"\n        #driver>\n        <option\n          *ngFor=\"let d of drivers\" [ngValue]=\"d\">{{d.Username}}</option>\n      </select>\n      <button type=\"button\" class=\"btn btn-success\" [disabled]=\"driver.selectedIndex < 0\">Hire</button>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1788,14 +1808,15 @@ var RideDetailsComponent = /** @class */ (function () {
         // ako postoji uzmi mu lokaciju ako ne postoji brisi ga... jer je zauzet
         for (var i = 0; i < this.drivers.length; ++i) {
             var exists = false;
-            for (var j = 0; j < data.drivers.length; ++j) {
+            var j = void 0;
+            for (j = 0; j < data.drivers.length; ++j) {
                 if (this.drivers[i].DriverID === data.drivers[j].ID) {
                     this.drivers[i].Location = data.drivers[j].Location;
                     exists = true;
                     break;
                 }
             }
-            if (exists === false) {
+            if (exists === false || (data.drivers[j].Vehicle.VehicleType !== this.ride.carType && this.ride.carType !== _models_car_types__WEBPACK_IMPORTED_MODULE_4__["CarType"].not_defined)) {
                 this.drivers.splice(i, 1);
             }
         }

@@ -53,7 +53,8 @@
         #driver>
         <option
           *ngFor="let d of drivers" [ngValue]="d">{{d.Username}}</option>
-      </select>
+      </select> &nbsp;
+      <button type="button" class="btn btn-success" [disabled]="driver.selectedIndex < 0" (click)="hireTheSelectedDriver()">Hire</button>
     </div>
   </div>
 </div>

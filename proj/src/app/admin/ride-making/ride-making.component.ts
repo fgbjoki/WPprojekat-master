@@ -5,7 +5,6 @@ import {DriverModel} from './driver.model';
 import {interval} from 'rxjs';
 import {DriverService} from './driver.service';
 import {LocationModel} from '../../models/location.model';
-import {RideService} from '../../home/rides/ride.service';
 import {CarType} from '../../models/car.types';
 import {AdminRideService} from './admin.ride.service';
 
@@ -69,10 +68,25 @@ export class RideMakingComponent implements OnInit, OnDestroy {
       );
   }
 
+  convertToVehicleType(): CarType {
+    let carType = CarType.not_defined;
+    switch (this.vehicleSelected.nativeElement.value) {
+      case 'Car':
+        carType = CarType.car;
+        break;
+      case 'Van':
+        carType = CarType.van;
+        break;
+    }
+    return carType;
+  }
+
   addAllDrivers(data: any) {
     for (let i = 0; i < data.drivers.length; ++i) {
-      this.drivers.push(new DriverModel(data.drivers[i].ID, data.drivers[i].Username,
-        data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
+      if (data.drivers[i].Vehicle.VehicleType === this.convertToVehicleType() || this.convertToVehicleType() === CarType.not_defined) {
+        this.drivers.push(new DriverModel(data.drivers[i].ID, data.drivers[i].Username,
+          data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
+      }
     }
   }
 
@@ -80,14 +94,15 @@ export class RideMakingComponent implements OnInit, OnDestroy {
     // ako postoji uzmi mu lokaciju ako ne postoji brisi ga... jer je zauzet
     for (let i = 0; i < this.drivers.length; ++i) {
       var exists = false;
-      for (let j = 0; j < data.drivers.length; ++j) {
+      let j;
+      for ( j = 0; j < data.drivers.length; ++j) {
         if (this.drivers[i].DriverID === data.drivers[j].ID) {
           this.drivers[i].Location = data.drivers[j].Location;
           exists = true;
           break;
         }
       }
-      if (exists === false) {
+      if (exists === false || ( data.drivers[j].Vehicle.VehicleType !== this.convertToVehicleType() && this.convertToVehicleType() !== CarType.not_defined)) {
         this.drivers.splice(i, 1);
       }
     }
@@ -100,8 +115,9 @@ export class RideMakingComponent implements OnInit, OnDestroy {
           break;
         }
       }
-      if (exists === false) {
-        this.drivers.push(data.drivers[i]);
+      if (exists === false &&
+        (data.drivers[i].Vehicle.VehicleType === this.convertToVehicleType() || this.convertToVehicleType() === CarType.not_defined) ) {
+          this.drivers.push(data.drivers[i]);
       }
     }
   }

@@ -108,14 +108,15 @@ export class RideDetailsComponent implements OnInit {
     // ako postoji uzmi mu lokaciju ako ne postoji brisi ga... jer je zauzet
     for (let i = 0; i < this.drivers.length; ++i) {
       var exists = false;
-      for (let j = 0; j < data.drivers.length; ++j) {
+      let j;
+      for ( j = 0; j < data.drivers.length; ++j) {
         if (this.drivers[i].DriverID === data.drivers[j].ID) {
           this.drivers[i].Location = data.drivers[j].Location;
           exists = true;
           break;
         }
       }
-      if (exists === false) {
+      if (exists === false || ( data.drivers[j].Vehicle.VehicleType !== this.ride.carType && this.ride.carType !== CarType.not_defined)) {
         this.drivers.splice(i, 1);
       }
     }
@@ -221,6 +222,10 @@ export class RideDetailsComponent implements OnInit {
         return 1;
       }
     });
+  }
+
+  hireTheSelectedDriver() {
+    
   }
 
 }

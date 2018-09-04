@@ -373,7 +373,6 @@ namespace MyWebAPI.Controllers
                 {
                     User foundUser = null;
                     UserController.loggedIn.TryGetValue(values, out foundUser);
-                    //TODO dodaj za admina.. fale parametri za driver-a i mozda jos nesto.. check
                     RideRepository.Instance.AddRide(adminCreatedRide.Location, adminCreatedRide.CarType,adminName: foundUser.Username, driverID: adminCreatedRide.DriverID, status: RideStatus.accepted);
                     var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"success\"}", System.Text.Encoding.UTF8, "application/json") };
                     return responseMessage;
