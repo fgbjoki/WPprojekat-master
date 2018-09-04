@@ -99,6 +99,16 @@ namespace RepositoryProject
             }
         }
 
+        public List<User> GetAllUsers()
+        {
+            if (users.Count > 0)
+            {
+                return users.ToList();
+            }
+            else
+                return null;
+        }
+
         public bool CheckIfExists(string username)
         {
             return users.Any(user => user.Username.Equals(username));
@@ -214,6 +224,17 @@ namespace RepositoryProject
 
             return true;
 
+        }
+
+        public bool ChangeDriverState(int driverID, int currentRide)
+        {
+            if (users.Any(driver => driver.ID == driver.ID))
+            {
+                ((Driver)users.First(driver => driver.ID == driverID)).CurrentRideID = currentRide;
+                return true;
+            }
+            else
+                return false;
         }
 
         #endregion

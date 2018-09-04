@@ -30,18 +30,26 @@ namespace MyWebAPI.Controllers
                     UserController.loggedIn.TryGetValue(values, out foundUser);
                     var listOfRides = RideRepository.Instance.GetAllRides().ToList();
 
-                    if(listOfRides != null)
-                        if (foundUser.GetType() == typeof(User))
+                    if (listOfRides != null)
+                    {
+                        if (foundUser.GetType() == typeof(User) && foundUser.AccessLevel == AccessLevel.user)
+                        {
                             listOfRides.RemoveAll(ride => ride.UserID != foundUser.ID);
-                    
+                        }
+
                         else if (foundUser.GetType() == typeof(Driver))
                         {
+                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff);
                             listOfRides.RemoveAll(ride => ride.DriverID != 0 && ride.DriverID != foundUser.ID);
                             listOfRides.RemoveAll(ride =>
                                 ride.CarType != ((Driver)foundUser).Vehicle.VehicleType && ride.CarType != VehicleType.not_defined
                             );
                         }
-
+                        else
+                        {
+                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff);
+                        }
+                    }
                     var json = new JavaScriptSerializer().Serialize(listOfRides == null ? new List<Rides>(): listOfRides);
                     var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"get\":\"success\", \"rides\":"+ json +"}", System.Text.Encoding.UTF8, "application/json") };
                     return responseMessage;
@@ -70,36 +78,34 @@ namespace MyWebAPI.Controllers
         [HttpPost]
         public HttpResponseMessage UserCreated([FromBody]UserCreatedRideParams userCreatedRide)
         {
+            CookieHeaderValue cookie;
+            if ((cookie = Request.Headers.GetCookies("myCookie").FirstOrDefault()) != null)
             {
-                CookieHeaderValue cookie;
-                if ((cookie = Request.Headers.GetCookies("myCookie").FirstOrDefault()) != null)
+                string values = cookie.Cookies[0].Value;
+                if (UserController.loggedIn.ContainsKey(values))
                 {
-                    string values = cookie.Cookies[0].Value;
-                    if (UserController.loggedIn.ContainsKey(values))
-                    {
-                        User foundUser = null;
-                        UserController.loggedIn.TryGetValue(values, out foundUser);
-                        RideRepository.Instance.AddRide(userCreatedRide.Location, userCreatedRide.CarType, foundUser.ID);
-                        var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"success\"}", System.Text.Encoding.UTF8, "application/json") };
-                        return responseMessage;
-                    }
-                    else
-                    {
-                        // ako korisnik nije ulogovan
-                        var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
-                        var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
-                        responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
-                        return responseMessage;
-                    }
+                    User foundUser = null;
+                    UserController.loggedIn.TryGetValue(values, out foundUser);
+                    RideRepository.Instance.AddRide(userCreatedRide.Location, userCreatedRide.CarType, foundUser.ID);
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"success\"}", System.Text.Encoding.UTF8, "application/json") };
+                    return responseMessage;
                 }
                 else
                 {
-                    // ako nema cookie
+                    // ako korisnik nije ulogovan
                     var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
                     var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
                     responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
                     return responseMessage;
                 }
+            }
+            else
+            {
+                // ako nema cookie
+                var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                return responseMessage;
             }
         }
 
@@ -159,7 +165,8 @@ namespace MyWebAPI.Controllers
                     HttpResponseMessage responseMessage = null;
 
                     if (RideRepository.Instance.AcceptRide(rideID, foundUser.ID))
-                        responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"accept\":\"success\", \"message\":\"Ride accepted\"}", System.Text.Encoding.UTF8, "application/json") };
+                        if (UserRepository.Instance.ChangeDriverState(foundUser.ID, rideID))
+                            responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"accept\":\"success\", \"message\":\"Ride accepted\"}", System.Text.Encoding.UTF8, "application/json") };
                     else
                         responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"accept\":\"success\", \"message\":\"Ride doesn't exist\"}", System.Text.Encoding.UTF8, "application/json") };
 
@@ -201,6 +208,7 @@ namespace MyWebAPI.Controllers
                     HttpResponseMessage responseMessage = null;
 
                     if (RideRepository.Instance.FailedRide(rideID, foundUser.ID))
+                        if (UserRepository.Instance.ChangeDriverState(foundUser.ID, -1))
                         responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"failed\":\"success\", \"message\":\"Ride failed\"}", System.Text.Encoding.UTF8, "application/json") };
                     else
                         responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"failed\":\"success\", \"message\":\"Ride doesn't exist\"}", System.Text.Encoding.UTF8, "application/json") };
@@ -243,7 +251,8 @@ namespace MyWebAPI.Controllers
                     HttpResponseMessage responseMessage = null;
 
                     if (RideRepository.Instance.SucceededRide(rideID, foundUser.ID))
-                        responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"succeeded\":\"success\", \"message\":\"Ride succeeded\"}", System.Text.Encoding.UTF8, "application/json") };
+                        if (UserRepository.Instance.ChangeDriverState(foundUser.ID, -1))
+                            responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"succeeded\":\"success\", \"message\":\"Ride succeeded\"}", System.Text.Encoding.UTF8, "application/json") };
                     else
                         responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"succeeded\":\"failed\", \"message\":\"Ride doesn't exist\"}", System.Text.Encoding.UTF8, "application/json") };
 
@@ -304,6 +313,84 @@ namespace MyWebAPI.Controllers
             {
                 // isetkao cookie = ga nema = nije ulgovan
                 var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"comment\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                return responseMessage;
+            }
+        }
+
+        [AllowAnonymous]
+        [Route("api/ride/changeRideAddress")]
+        [HttpPost]
+        public HttpResponseMessage ChangeAddress([FromBody]ChangeAddressParams changeParams)
+        {
+            CookieHeaderValue cookie;
+            if ((cookie = Request.Headers.GetCookies("myCookie").FirstOrDefault()) != null)
+            {
+                string values = cookie.Cookies[0].Value;
+                if (UserController.loggedIn.ContainsKey(values))
+                {
+                    User foundUser = null;
+
+                    HttpResponseMessage responseMessage = null;
+
+                    if (RideRepository.Instance.ChangeAddress(changeParams.RideID, changeParams.NewLocation))
+                        responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"change\":\"success\", \"message\":\"Changed address\"}", System.Text.Encoding.UTF8, "application/json") };
+                    else
+                        responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"change\":\"failed\", \"message\":\"Change addres couldn't be executed\"}", System.Text.Encoding.UTF8, "application/json") };
+
+                    return responseMessage;
+                }
+                else
+                {
+                    // ako korisnik nije ulogovan
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"change\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                    var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                    responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                    return responseMessage;
+                }
+            }
+            else
+            {
+                // isetkao cookie = ga nema = nije ulgovan
+                var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"change\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                return responseMessage;
+            }
+        }
+
+        [AllowAnonymous]
+        [Route("api/ride/admincreated")]
+        [HttpPost]
+        public HttpResponseMessage AdminCreated([FromBody]AdminCreatedRideParams adminCreatedRide)
+        {
+            CookieHeaderValue cookie;
+            if ((cookie = Request.Headers.GetCookies("myCookie").FirstOrDefault()) != null)
+            {
+                string values = cookie.Cookies[0].Value;
+                if (UserController.loggedIn.ContainsKey(values))
+                {
+                    User foundUser = null;
+                    UserController.loggedIn.TryGetValue(values, out foundUser);
+                    //TODO dodaj za admina.. fale parametri za driver-a i mozda jos nesto.. check
+                    RideRepository.Instance.AddRide(adminCreatedRide.Location, adminCreatedRide.CarType,adminName: foundUser.Username, driverID: adminCreatedRide.DriverID, status: RideStatus.accepted);
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"success\"}", System.Text.Encoding.UTF8, "application/json") };
+                    return responseMessage;
+                }
+                else
+                {
+                    // ako korisnik nije ulogovan
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                    var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                    responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                    return responseMessage;
+                }
+            }
+            else
+            {
+                // ako nema cookie
+                var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"post\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
                 var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
                 responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
                 return responseMessage;

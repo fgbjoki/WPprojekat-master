@@ -49,3 +49,8 @@ F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\obj\Debug\MyWebAPI.csproj.CopyCom
 F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\obj\Debug\MyWebAPI.dll
 F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\obj\Debug\MyWebAPI.pdb
 F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\bin\GeocodeSharp.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\bin\DB\TaxiBase.mdf
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\bin\DB\TaxiBase_log.ldf
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\bin\EntityFramework.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\bin\RepositoryProject.dll.config
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\MyWebAPI\bin\EntityFramework.xml

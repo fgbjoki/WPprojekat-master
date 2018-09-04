@@ -7,3 +7,10 @@ F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProj
 F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.csproj.CopyComplete
 F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.dll
 F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\obj\Debug\RepositoryProject.pdb
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\DB\TaxiBase.mdf
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\DB\TaxiBase_log.ldf
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\RepositoryProject.dll.config
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\EntityFramework.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\EntityFramework.SqlServer.dll
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\EntityFramework.xml
+F:\FAX_MY\WP\WPprojekat-master\WebAPI\RepositoryProject\bin\Debug\EntityFramework.SqlServer.xml

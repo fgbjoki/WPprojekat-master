@@ -34,6 +34,7 @@ export class RideService {
         )
       );
   }
+
   public cancelRide(rideID: number) {
     const head = new Headers({ 'Content-Type': 'application/json' });
     return this.http.post('http://localhost:51383/api/ride/cancelride',
@@ -80,6 +81,24 @@ export class RideService {
     const head = new Headers({ 'Content-Type': 'application/json' });
     return this.http.post('http://localhost:51383/api/ride/successride',
       JSON.stringify(rideID), {headers: head})
+      .pipe(
+        map(
+          (response: Response) => {
+            const data = response.json();
+            return data;
+          }
+        )
+      );
+  }
+
+  public changeAddress(rideID: number, newLocation: LocationModel) {
+    const head = new Headers({ 'Content-Type': 'application/json' });
+    return this.http.post('http://localhost:51383/api/ride/changeRideAddress',
+      {
+        RideID: rideID,
+        NewLocation: newLocation
+      }
+      , {headers: head })
       .pipe(
         map(
           (response: Response) => {

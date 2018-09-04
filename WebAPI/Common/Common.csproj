@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,8 @@
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LoginParameters.cs" />
+    <Compile Include="Parameters\AdminCreatedRideParams.cs" />
+    <Compile Include="Parameters\ChangeAddressParams.cs" />
     <Compile Include="Parameters\CommentParams.cs" />
     <Compile Include="Parameters\DriverRegistrationParameters.cs" />
     <Compile Include="Rides.cs" />

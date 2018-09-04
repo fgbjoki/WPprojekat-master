@@ -1,0 +1,56 @@
+<div class="row">
+  <h1 class="page-header">Create Ride</h1>
+  <div class="col-xs-12">
+    <form (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-6">
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label>{{startAddress}}</label>
+            <agm-map [latitude]="marker.lat" [longitude]="marker.lng" (mapClick)="onClickMap($event)" [zoom]="14">
+              <agm-marker
+                [latitude]="marker.lat"
+                [longitude]="marker.lng"
+                [label]="marker.label"
+                id="gmApi"
+                *ngIf="marker.locationChoosen"
+              ></agm-marker>
+            </agm-map>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="CarType">Vehicle type</label>
+            <select
+              id="CarType"
+              #CARTYPE>
+              <option *ngFor="let vehicle of vehicleType"
+                      [value]="vehicle"
+              >{{vehicle}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="driver">Driver</label>
+            <select
+              id="driver"
+              #driver>
+              <option
+                *ngFor="let d of drivers; let i = index;" [ngValue]="d"
+              (select)="checkDrivers($event.target.value)">{{d.Username}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

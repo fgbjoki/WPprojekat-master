@@ -37,6 +37,9 @@ import { DriverMakingComponent } from './admin/driver-making/driver-making.compo
 import {DriverMakingService} from './admin/driver-making/driver-making.service';
 import { CommentComponent } from './home/rides/ride-details/comment/comment.component';
 import {CommentService} from './home/rides/ride-details/comment/comment.service';
+import { RideMakingComponent } from './admin/ride-making/ride-making.component';
+import {DriverService} from './admin/ride-making/driver.service';
+import {AdminRideService} from './admin/ride-making/admin.ride.service';
 
 
 const appRoutes: Routes = [
@@ -74,7 +77,8 @@ const appRoutes: Routes = [
     DriverPositionComponent,
     AdminComponent,
     DriverMakingComponent,
-    CommentComponent
+    CommentComponent,
+    RideMakingComponent
   ],
   imports: [
     BrowserModule,
@@ -99,7 +103,10 @@ const appRoutes: Routes = [
     DriverGuardService,
     AdminGuard,
     DriverMakingService,
-    CommentService
+    CommentService,
+    DriverService,
+    RideService,
+    AdminRideService
   ],
   bootstrap: [AppComponent]
 })

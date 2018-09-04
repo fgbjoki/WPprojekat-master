@@ -93,7 +93,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"taxiRequests\">\r\n    <div class=\"row\">\r\n      <div class=\"col\">\r\n        <app-driver-making></app-driver-making>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"taxiRequests\">\r\n    <div class=\"row\">\r\n      <div class=\"col\">\r\n        <app-driver-making></app-driver-making>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <br/>\r\n  <div class=\"row\">\r\n    <div class=\"col\">\r\n      <app-ride-making></app-ride-making>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -339,6 +339,376 @@ var DriverMakingService = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/admin/ride-making/admin.ride.service.ts":
+/*!*********************************************************!*\
+  !*** ./src/app/admin/ride-making/admin.ride.service.ts ***!
+  \*********************************************************/
+/*! exports provided: AdminRideService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AdminRideService", function() { return AdminRideService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var AdminRideService = /** @class */ (function () {
+    function AdminRideService(http, router) {
+        this.http = http;
+        this.router = router;
+    }
+    AdminRideService.prototype.adminCreateRide = function (location, carType, driverID) {
+        var head = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["Headers"]({ 'Content-Type': 'application/json' });
+        return this.http.post('http://localhost:51383/api/ride/admincreated', {
+            Location: location,
+            CarType: carType,
+            DriverID: driverID
+        }, { headers: head })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (response) {
+            var data = response.json();
+            return data;
+        }));
+    };
+    AdminRideService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_angular_http__WEBPACK_IMPORTED_MODULE_1__["Http"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
+    ], AdminRideService);
+    return AdminRideService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/admin/ride-making/driver.model.ts":
+/*!***************************************************!*\
+  !*** ./src/app/admin/ride-making/driver.model.ts ***!
+  \***************************************************/
+/*! exports provided: DriverModel */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriverModel", function() { return DriverModel; });
+var DriverModel = /** @class */ (function () {
+    function DriverModel(driverID, username, vehicleType, location) {
+        this.DriverID = driverID;
+        this.Username = username;
+        this.vehicleType = vehicleType;
+        this.Location = location;
+        this.relativePath = 0;
+    }
+    return DriverModel;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/admin/ride-making/driver.service.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/admin/ride-making/driver.service.ts ***!
+  \*****************************************************/
+/*! exports provided: DriverService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DriverService", function() { return DriverService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/fesm5/http.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var DriverService = /** @class */ (function () {
+    function DriverService(http, router) {
+        this.http = http;
+        this.router = router;
+    }
+    DriverService.prototype.getDrivers = function () {
+        return this.http
+            .get('http://localhost:51383/api/user/drivers')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (response) {
+            var data = response.json();
+            return data;
+        }));
+    };
+    DriverService = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_angular_http__WEBPACK_IMPORTED_MODULE_1__["Http"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
+    ], DriverService);
+    return DriverService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/admin/ride-making/ride-making.component.css":
+/*!*************************************************************!*\
+  !*** ./src/app/admin/ride-making/ride-making.component.css ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "agm-map {\r\n  height: 250px;\r\n  width: 300px;\r\n}\r\n"
+
+/***/ }),
+
+/***/ "./src/app/admin/ride-making/ride-making.component.html":
+/*!**************************************************************!*\
+  !*** ./src/app/admin/ride-making/ride-making.component.html ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"row\">\r\n  <h1 class=\"page-header\">Create Ride</h1>\r\n  <div class=\"col-xs-12\">\r\n    <form (ngSubmit)=\"onSubmit()\">\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-6\">\r\n          <button type=\"submit\" class=\"btn btn-success\">Save</button>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-6\">\r\n          <div class=\"form-group\">\r\n            <label>{{startAddress}}</label>\r\n            <agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\r\n              <agm-marker\r\n                [latitude]=\"marker.lat\"\r\n                [longitude]=\"marker.lng\"\r\n                [label]=\"marker.label\"\r\n                id=\"gmApi\"\r\n                *ngIf=\"marker.locationChoosen\"\r\n              ></agm-marker>\r\n            </agm-map>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-6\">\r\n          <div class=\"form-group\">\r\n            <label for=\"CarType\">Vehicle type</label>\r\n            <select\r\n              id=\"CarType\"\r\n              #CARTYPE>\r\n              <option *ngFor=\"let vehicle of vehicleType\"\r\n                      [value]=\"vehicle\"\r\n              >{{vehicle}}</option>\r\n            </select>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"row\">\r\n        <div class=\"col-xs-6\">\r\n          <div class=\"form-group\">\r\n            <label for=\"driver\">Driver</label>\r\n            <select\r\n              id=\"driver\"\r\n              #driver>\r\n              <option\r\n                *ngFor=\"let d of drivers; let i = index;\" [ngValue]=\"d\"\r\n              (select)=\"checkDrivers($event.target.value)\">{{d.Username}}</option>\r\n            </select>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </form>\r\n  </div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "./src/app/admin/ride-making/ride-making.component.ts":
+/*!************************************************************!*\
+  !*** ./src/app/admin/ride-making/ride-making.component.ts ***!
+  \************************************************************/
+/*! exports provided: RideMakingComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RideMakingComponent", function() { return RideMakingComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _map_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../map.service */ "./src/app/map.service.ts");
+/* harmony import */ var _driver_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./driver.model */ "./src/app/admin/ride-making/driver.model.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _driver_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./driver.service */ "./src/app/admin/ride-making/driver.service.ts");
+/* harmony import */ var _models_location_model__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../models/location.model */ "./src/app/models/location.model.ts");
+/* harmony import */ var _models_car_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../models/car.types */ "./src/app/models/car.types.ts");
+/* harmony import */ var _admin_ride_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./admin.ride.service */ "./src/app/admin/ride-making/admin.ride.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+
+var RideMakingComponent = /** @class */ (function () {
+    function RideMakingComponent(mapService, driverService, rideService) {
+        this.mapService = mapService;
+        this.driverService = driverService;
+        this.rideService = rideService;
+        this.statuses = [
+            'Formed',
+            'Pro'
+        ];
+        this.vehicleType = [
+            'Not defined',
+            'Car',
+            'Van'
+        ];
+        this.drivers = [];
+        this.marker = new /** @class */ (function () {
+            function class_1() {
+            }
+            return class_1;
+        }());
+        this.marker.lat = 45.267136;
+        this.marker.lng = 19.833549;
+        this.marker.label = 'A';
+        this.marker.locationChoosen = false;
+    }
+    RideMakingComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.result = Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["interval"])(6000)
+            .subscribe(function (r) {
+            _this.driverService.getDrivers()
+                .subscribe(function (data) {
+                if (data.get === 'success') {
+                    if (_this.drivers.length === 0) {
+                        _this.addAllDrivers(data);
+                    }
+                    else {
+                        _this.addIfNotExist(data);
+                    }
+                }
+                _this.sortDrivers();
+            });
+        });
+    };
+    RideMakingComponent.prototype.addAllDrivers = function (data) {
+        for (var i = 0; i < data.drivers.length; ++i) {
+            this.drivers.push(new _driver_model__WEBPACK_IMPORTED_MODULE_2__["DriverModel"](data.drivers[i].ID, data.drivers[i].Username, data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
+        }
+    };
+    RideMakingComponent.prototype.addIfNotExist = function (data) {
+        // ako postoji uzmi mu lokaciju ako ne postoji brisi ga... jer je zauzet
+        for (var i = 0; i < this.drivers.length; ++i) {
+            var exists = false;
+            for (var j = 0; j < data.drivers.length; ++j) {
+                if (this.drivers[i].DriverID === data.drivers[j].ID) {
+                    this.drivers[i].Location = data.drivers[j].Location;
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists === false) {
+                this.drivers.splice(i, 1);
+            }
+        }
+        // ako postoji ... nista.. ako ne postoji dodaj ga jer imam novog koji je spreman da radi
+        for (var i = 0; i < data.drivers.length; ++i) {
+            var exists = false;
+            for (var j = 0; j < this.drivers.length; ++j) {
+                if (this.drivers[j].DriverID === data.drivers[i].ID) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists === false) {
+                this.drivers.push(data.drivers[i]);
+            }
+        }
+    };
+    RideMakingComponent.prototype.onSubmit = function () {
+        var _this = this;
+        var carType = _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].not_defined;
+        switch (this.vehicleSelected.nativeElement.value) {
+            case 'Car':
+                carType = _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].car;
+                break;
+            case 'Van':
+                carType = _models_car_types__WEBPACK_IMPORTED_MODULE_6__["CarType"].van;
+                break;
+        }
+        var split = this.startAddress.split(',');
+        var tempValue = split[0].split(' ');
+        var streetName = '';
+        var streetNumber;
+        var city = '';
+        var zipcode = '';
+        var country;
+        var i = 0;
+        for (; i < tempValue.length; ++i) {
+            if (tempValue[i].match(/^[0-9]+$/) == null) {
+                streetName += tempValue[i] + ' ';
+            }
+            else {
+                streetNumber = parseInt(tempValue[i], 10);
+            }
+        }
+        for (tempValue = split[1].split(' '), i = 0; i < tempValue.length; ++i) {
+            if (tempValue[i].match(/^[0-9]+$/) == null) {
+                city += tempValue[i] + ' ';
+            }
+            else
+                zipcode = tempValue[i];
+        }
+        country = split[3];
+        var driver = this.drivers.find(function (a) { return a.Username === _this.driverSelected.nativeElement.value; });
+        this.rideService.adminCreateRide(new _models_location_model__WEBPACK_IMPORTED_MODULE_5__["LocationModel"](this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode.toString()), carType, driver.DriverID)
+            .subscribe(function (data) {
+            if (data.post === 'success') {
+                console.log('TODO, Feedback on success');
+            }
+            else {
+                console.log('TODO, Feedback on fail: ' + data.message);
+            }
+        });
+    };
+    RideMakingComponent.prototype.onClickMap = function (event) {
+        var _this = this;
+        this.marker.lat = event.coords.lat;
+        this.marker.lng = event.coords.lng;
+        this.marker.locationChoosen = true;
+        var latlng = new google.maps.LatLng(this.marker.lat, this.marker.lng);
+        this.mapService.geocode(latlng)
+            .subscribe(function (data) {
+            console.log(data[0].formatted_address);
+            _this.startAddress = data[0].formatted_address;
+        });
+        this.sortDrivers();
+    };
+    RideMakingComponent.prototype.sortDrivers = function () {
+        for (var i = 0; i < this.drivers.length; ++i) {
+            var tempValue;
+            tempValue =
+                Math.sqrt(Math.pow(Math.abs(this.marker.lat - this.drivers[i].Location.lat), 2) +
+                    Math.pow(Math.abs(this.marker.lng - this.drivers[i].Location.lng), 2));
+            this.drivers[i].relativePath = tempValue;
+        }
+        this.drivers.sort(function (a, b) {
+            if (a.relativePath - b.relativePath > 0) {
+                return -1;
+            }
+            else {
+                return 1;
+            }
+        });
+    };
+    RideMakingComponent.prototype.ngOnDestroy = function () {
+        this.result.unsubscribe();
+    };
+    RideMakingComponent.prototype.checkDrivers = function (event) {
+        console.log('event: ' + event);
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('CARTYPE'),
+        __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
+    ], RideMakingComponent.prototype, "vehicleSelected", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('driver'),
+        __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
+    ], RideMakingComponent.prototype, "driverSelected", void 0);
+    RideMakingComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-ride-making',
+            template: __webpack_require__(/*! ./ride-making.component.html */ "./src/app/admin/ride-making/ride-making.component.html"),
+            styles: [__webpack_require__(/*! ./ride-making.component.css */ "./src/app/admin/ride-making/ride-making.component.css")]
+        }),
+        __metadata("design:paramtypes", [_map_service__WEBPACK_IMPORTED_MODULE_1__["MapService"], _driver_service__WEBPACK_IMPORTED_MODULE_4__["DriverService"], _admin_ride_service__WEBPACK_IMPORTED_MODULE_7__["AdminRideService"]])
+    ], RideMakingComponent);
+    return RideMakingComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/app.component.css":
 /*!***********************************!*\
   !*** ./src/app/app.component.css ***!
@@ -500,17 +870,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _home_rides_ride_list_ride_list_component__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./home/rides/ride-list/ride-list.component */ "./src/app/home/rides/ride-list/ride-list.component.ts");
 /* harmony import */ var _home_rides_ride_details_ride_details_component__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./home/rides/ride-details/ride-details.component */ "./src/app/home/rides/ride-details/ride-details.component.ts");
 /* harmony import */ var _home_rides_ride_list_ride_item_ride_item_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./home/rides/ride-list/ride-item/ride-item.component */ "./src/app/home/rides/ride-list/ride-item/ride-item.component.ts");
-/* harmony import */ var _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./home/rides/ride-edit/ride-edit.component */ "./src/app/home/rides/ride-edit/ride-edit.component.ts");
-/* harmony import */ var _map_service__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./map.service */ "./src/app/map.service.ts");
-/* harmony import */ var _auth_guard_service__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./auth-guard.service */ "./src/app/auth-guard.service.ts");
-/* harmony import */ var _driver_position_driver_position_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./driver-position/driver-position.component */ "./src/app/driver-position/driver-position.component.ts");
-/* harmony import */ var _driver_guard_service__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./driver-guard.service */ "./src/app/driver-guard.service.ts");
-/* harmony import */ var _admin_admin_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./admin/admin.component */ "./src/app/admin/admin.component.ts");
-/* harmony import */ var _admin_guard_service__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./admin-guard.service */ "./src/app/admin-guard.service.ts");
-/* harmony import */ var _admin_driver_making_driver_making_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./admin/driver-making/driver-making.component */ "./src/app/admin/driver-making/driver-making.component.ts");
-/* harmony import */ var _admin_driver_making_driver_making_service__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./admin/driver-making/driver-making.service */ "./src/app/admin/driver-making/driver-making.service.ts");
-/* harmony import */ var _home_rides_ride_details_comment_comment_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./home/rides/ride-details/comment/comment.component */ "./src/app/home/rides/ride-details/comment/comment.component.ts");
-/* harmony import */ var _home_rides_ride_details_comment_comment_service__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./home/rides/ride-details/comment/comment.service */ "./src/app/home/rides/ride-details/comment/comment.service.ts");
+/* harmony import */ var _home_rides_ride_service__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./home/rides/ride.service */ "./src/app/home/rides/ride.service.ts");
+/* harmony import */ var _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./home/rides/ride-edit/ride-edit.component */ "./src/app/home/rides/ride-edit/ride-edit.component.ts");
+/* harmony import */ var _map_service__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./map.service */ "./src/app/map.service.ts");
+/* harmony import */ var _auth_guard_service__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./auth-guard.service */ "./src/app/auth-guard.service.ts");
+/* harmony import */ var _driver_position_driver_position_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./driver-position/driver-position.component */ "./src/app/driver-position/driver-position.component.ts");
+/* harmony import */ var _driver_guard_service__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./driver-guard.service */ "./src/app/driver-guard.service.ts");
+/* harmony import */ var _admin_admin_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./admin/admin.component */ "./src/app/admin/admin.component.ts");
+/* harmony import */ var _admin_guard_service__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./admin-guard.service */ "./src/app/admin-guard.service.ts");
+/* harmony import */ var _admin_driver_making_driver_making_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./admin/driver-making/driver-making.component */ "./src/app/admin/driver-making/driver-making.component.ts");
+/* harmony import */ var _admin_driver_making_driver_making_service__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./admin/driver-making/driver-making.service */ "./src/app/admin/driver-making/driver-making.service.ts");
+/* harmony import */ var _home_rides_ride_details_comment_comment_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./home/rides/ride-details/comment/comment.component */ "./src/app/home/rides/ride-details/comment/comment.component.ts");
+/* harmony import */ var _home_rides_ride_details_comment_comment_service__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./home/rides/ride-details/comment/comment.service */ "./src/app/home/rides/ride-details/comment/comment.service.ts");
+/* harmony import */ var _admin_ride_making_ride_making_component__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./admin/ride-making/ride-making.component */ "./src/app/admin/ride-making/ride-making.component.ts");
+/* harmony import */ var _admin_ride_making_driver_service__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./admin/ride-making/driver.service */ "./src/app/admin/ride-making/driver.service.ts");
+/* harmony import */ var _admin_ride_making_admin_ride_service__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./admin/ride-making/admin.ride.service */ "./src/app/admin/ride-making/admin.ride.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -553,21 +927,25 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
 
 
 
+
+
+
+
 var appRoutes = [
     { path: '', redirectTo: '/rides', pathMatch: 'full' },
-    { path: 'rides', canActivate: [_auth_guard_service__WEBPACK_IMPORTED_MODULE_27__["AuthGuard"]], component: _home_home_component__WEBPACK_IMPORTED_MODULE_12__["HomeComponent"], children: [
+    { path: 'rides', canActivate: [_auth_guard_service__WEBPACK_IMPORTED_MODULE_28__["AuthGuard"]], component: _home_home_component__WEBPACK_IMPORTED_MODULE_12__["HomeComponent"], children: [
             { path: '', component: _home_rides_ride_start_ride_start_component__WEBPACK_IMPORTED_MODULE_14__["RideStartComponent"] },
-            { path: 'new', component: _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_25__["RideEditComponent"] },
+            { path: 'new', component: _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_26__["RideEditComponent"] },
             { path: ':id', component: _home_rides_ride_details_ride_details_component__WEBPACK_IMPORTED_MODULE_23__["RideDetailsComponent"] },
-            { path: ':id/edit', component: _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_25__["RideEditComponent"] }
+            { path: ':id/edit', component: _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_26__["RideEditComponent"] }
         ] },
     { path: 'profile', component: _profile_profile_component__WEBPACK_IMPORTED_MODULE_11__["ProfileComponent"], children: [
             { path: 'registration', component: _profile_register_register_component__WEBPACK_IMPORTED_MODULE_9__["RegisterComponent"] },
             { path: 'login', component: _profile_login_login_component__WEBPACK_IMPORTED_MODULE_10__["LoginComponent"] },
-            { path: 'modify', canActivate: [_auth_guard_service__WEBPACK_IMPORTED_MODULE_27__["AuthGuard"]], component: _profile_modify_modify_component__WEBPACK_IMPORTED_MODULE_13__["ModifyComponent"] }
+            { path: 'modify', canActivate: [_auth_guard_service__WEBPACK_IMPORTED_MODULE_28__["AuthGuard"]], component: _profile_modify_modify_component__WEBPACK_IMPORTED_MODULE_13__["ModifyComponent"] }
         ] },
-    { path: 'myPosition', component: _driver_position_driver_position_component__WEBPACK_IMPORTED_MODULE_28__["DriverPositionComponent"], canActivate: [_driver_guard_service__WEBPACK_IMPORTED_MODULE_29__["DriverGuardService"]] },
-    { path: 'adminPanel', component: _admin_admin_component__WEBPACK_IMPORTED_MODULE_30__["AdminComponent"], canActivate: [_admin_guard_service__WEBPACK_IMPORTED_MODULE_31__["AdminGuard"]] }
+    { path: 'myPosition', component: _driver_position_driver_position_component__WEBPACK_IMPORTED_MODULE_29__["DriverPositionComponent"], canActivate: [_driver_guard_service__WEBPACK_IMPORTED_MODULE_30__["DriverGuardService"]] },
+    { path: 'adminPanel', component: _admin_admin_component__WEBPACK_IMPORTED_MODULE_31__["AdminComponent"], canActivate: [_admin_guard_service__WEBPACK_IMPORTED_MODULE_32__["AdminGuard"]] }
 ];
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -587,11 +965,12 @@ var AppModule = /** @class */ (function () {
                 _home_rides_ride_details_ride_details_component__WEBPACK_IMPORTED_MODULE_23__["RideDetailsComponent"],
                 _home_rides_ride_list_ride_item_ride_item_component__WEBPACK_IMPORTED_MODULE_24__["RideItemComponent"],
                 _home_rides_ride_start_ride_start_component__WEBPACK_IMPORTED_MODULE_14__["RideStartComponent"],
-                _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_25__["RideEditComponent"],
-                _driver_position_driver_position_component__WEBPACK_IMPORTED_MODULE_28__["DriverPositionComponent"],
-                _admin_admin_component__WEBPACK_IMPORTED_MODULE_30__["AdminComponent"],
-                _admin_driver_making_driver_making_component__WEBPACK_IMPORTED_MODULE_32__["DriverMakingComponent"],
-                _home_rides_ride_details_comment_comment_component__WEBPACK_IMPORTED_MODULE_34__["CommentComponent"]
+                _home_rides_ride_edit_ride_edit_component__WEBPACK_IMPORTED_MODULE_26__["RideEditComponent"],
+                _driver_position_driver_position_component__WEBPACK_IMPORTED_MODULE_29__["DriverPositionComponent"],
+                _admin_admin_component__WEBPACK_IMPORTED_MODULE_31__["AdminComponent"],
+                _admin_driver_making_driver_making_component__WEBPACK_IMPORTED_MODULE_33__["DriverMakingComponent"],
+                _home_rides_ride_details_comment_comment_component__WEBPACK_IMPORTED_MODULE_35__["CommentComponent"],
+                _admin_ride_making_ride_making_component__WEBPACK_IMPORTED_MODULE_37__["RideMakingComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
@@ -611,12 +990,15 @@ var AppModule = /** @class */ (function () {
                 _profile_logout_logout_component__WEBPACK_IMPORTED_MODULE_19__["LogoutService"],
                 ngx_cookie_service__WEBPACK_IMPORTED_MODULE_20__["CookieService"],
                 _profile_modify_modify_service__WEBPACK_IMPORTED_MODULE_21__["ModifyService"],
-                _map_service__WEBPACK_IMPORTED_MODULE_26__["MapService"],
-                _auth_guard_service__WEBPACK_IMPORTED_MODULE_27__["AuthGuard"],
-                _driver_guard_service__WEBPACK_IMPORTED_MODULE_29__["DriverGuardService"],
-                _admin_guard_service__WEBPACK_IMPORTED_MODULE_31__["AdminGuard"],
-                _admin_driver_making_driver_making_service__WEBPACK_IMPORTED_MODULE_33__["DriverMakingService"],
-                _home_rides_ride_details_comment_comment_service__WEBPACK_IMPORTED_MODULE_35__["CommentService"]
+                _map_service__WEBPACK_IMPORTED_MODULE_27__["MapService"],
+                _auth_guard_service__WEBPACK_IMPORTED_MODULE_28__["AuthGuard"],
+                _driver_guard_service__WEBPACK_IMPORTED_MODULE_30__["DriverGuardService"],
+                _admin_guard_service__WEBPACK_IMPORTED_MODULE_32__["AdminGuard"],
+                _admin_driver_making_driver_making_service__WEBPACK_IMPORTED_MODULE_34__["DriverMakingService"],
+                _home_rides_ride_details_comment_comment_service__WEBPACK_IMPORTED_MODULE_36__["CommentService"],
+                _admin_ride_making_driver_service__WEBPACK_IMPORTED_MODULE_38__["DriverService"],
+                _home_rides_ride_service__WEBPACK_IMPORTED_MODULE_25__["RideService"],
+                _admin_ride_making_admin_ride_service__WEBPACK_IMPORTED_MODULE_39__["AdminRideService"]
             ],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_7__["AppComponent"]]
         })
@@ -1284,7 +1666,7 @@ module.exports = "agm-map {\r\n  height: 100px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus !== 0 && ride.rideStatus !== 1\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus > 2\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n\n<!-- Admin part -->\n<div class=\"row\" *ngIf=\"ride.rideStatus === 0 && myGlobals.myUser.accessLevel === 3\">\n  <div class=\"col-xs-6\">\n    <div class=\"form-group\">\n      <label for=\"driver\">Drivers</label> &nbsp;\n      <select\n        id=\"driver\"\n        #driver>\n        <option\n          *ngFor=\"let d of drivers\" [ngValue]=\"d\">{{d.Username}}</option>\n      </select>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1302,7 +1684,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ride_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ride.service */ "./src/app/home/rides/ride.service.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
 /* harmony import */ var _models_ride_status__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../models/ride.status */ "./src/app/models/ride.status.ts");
-/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../global */ "./src/app/global.ts");
+/* harmony import */ var _models_car_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../models/car.types */ "./src/app/models/car.types.ts");
+/* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../global */ "./src/app/global.ts");
+/* harmony import */ var _admin_ride_making_driver_model__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../admin/ride-making/driver.model */ "./src/app/admin/ride-making/driver.model.ts");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+/* harmony import */ var _admin_ride_making_driver_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../admin/ride-making/driver.service */ "./src/app/admin/ride-making/driver.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1317,13 +1703,19 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
+
+
 var RideDetailsComponent = /** @class */ (function () {
-    function RideDetailsComponent(rideService, route, router, myGlobals) {
+    function RideDetailsComponent(rideService, route, router, myGlobals, driverService) {
         this.rideService = rideService;
         this.route = route;
         this.router = router;
         this.myGlobals = myGlobals;
+        this.driverService = driverService;
         this.rideStatus = '';
+        this.drivers = [];
     }
     RideDetailsComponent.prototype.isHidden = function () {
         var returnValue = true;
@@ -1336,7 +1728,6 @@ var RideDetailsComponent = /** @class */ (function () {
     };
     RideDetailsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log('access: ' + this.myGlobals.myUser.accessLevel);
         this.route.params
             .subscribe(function (params) {
             _this.id = +params['id'];
@@ -1367,6 +1758,61 @@ var RideDetailsComponent = /** @class */ (function () {
                     break;
             }
         });
+        if (this.myGlobals.myUser.accessLevel === 3) {
+            this.result = Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["interval"])(6000)
+                .subscribe(function (r) {
+                _this.driverService.getDrivers()
+                    .subscribe(function (data) {
+                    if (data.get === 'success') {
+                        if (_this.drivers.length === 0) {
+                            _this.addAllDrivers(data);
+                        }
+                        else {
+                            _this.addIfNotExist(data);
+                        }
+                    }
+                    _this.sortDrivers();
+                });
+            });
+        }
+    };
+    RideDetailsComponent.prototype.addAllDrivers = function (data) {
+        for (var i = 0; i < data.drivers.length; ++i) {
+            if (data.drivers[i].Vehicle.VehicleType === this.ride.carType || this.ride.carType === _models_car_types__WEBPACK_IMPORTED_MODULE_4__["CarType"].not_defined) {
+                console.log('added + ' + data.drivers[i].Username);
+                this.drivers.push(new _admin_ride_making_driver_model__WEBPACK_IMPORTED_MODULE_6__["DriverModel"](data.drivers[i].ID, data.drivers[i].Username, data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
+            }
+        }
+    };
+    RideDetailsComponent.prototype.addIfNotExist = function (data) {
+        // ako postoji uzmi mu lokaciju ako ne postoji brisi ga... jer je zauzet
+        for (var i = 0; i < this.drivers.length; ++i) {
+            var exists = false;
+            for (var j = 0; j < data.drivers.length; ++j) {
+                if (this.drivers[i].DriverID === data.drivers[j].ID) {
+                    this.drivers[i].Location = data.drivers[j].Location;
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists === false) {
+                this.drivers.splice(i, 1);
+            }
+        }
+        // ako postoji ... nista.. ako ne postoji dodaj ga jer imam novog koji je spreman da radi
+        for (var i = 0; i < data.drivers.length; ++i) {
+            var exists = false;
+            for (var j = 0; j < this.drivers.length; ++j) {
+                if (this.drivers[j].DriverID === data.drivers[i].ID) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists === false && (this.ride.carType === data.drivers[i].Vehicle.VehicleType || this.ride.carType === _models_car_types__WEBPACK_IMPORTED_MODULE_4__["CarType"].not_defined)) {
+                console.log('added + ' + data.drivers[i].Username);
+                this.drivers.push(new _admin_ride_making_driver_model__WEBPACK_IMPORTED_MODULE_6__["DriverModel"](data.drivers[i].ID, data.drivers[i].Username, data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
+            }
+        }
     };
     RideDetailsComponent.prototype.OnClick = function (toExecute) {
         var _this = this;
@@ -1397,7 +1843,6 @@ var RideDetailsComponent = /** @class */ (function () {
         var _this = this;
         this.rideService.acceptRide(this.ride.rideID)
             .subscribe(function (data) {
-            console.log('data ' + data);
             if (data.accept === 'success') {
                 _this.router.navigateByUrl('');
                 console.log('[TODO] Feedback, successfully accept ride');
@@ -1411,7 +1856,6 @@ var RideDetailsComponent = /** @class */ (function () {
         var _this = this;
         this.rideService.failedRide(this.ride.rideID)
             .subscribe(function (data) {
-            console.log('data ' + data);
             if (data.failed === 'success') {
                 _this.router.navigateByUrl('');
                 console.log('[TODO] Feedback, failed ride');
@@ -1425,13 +1869,29 @@ var RideDetailsComponent = /** @class */ (function () {
         var _this = this;
         this.rideService.succeededRide(this.ride.rideID)
             .subscribe(function (data) {
-            console.log('data ' + data);
             if (data.succeeded === 'success') {
                 _this.router.navigateByUrl('');
                 console.log('[TODO] Feedback, succeeded ride');
             }
             else {
                 console.log('[TODO] Feedback, succeeded error: ' + data.message);
+            }
+        });
+    };
+    RideDetailsComponent.prototype.sortDrivers = function () {
+        for (var i = 0; i < this.drivers.length; ++i) {
+            var tempValue;
+            tempValue =
+                Math.sqrt(Math.pow(Math.abs(this.ride.startLocation.lat - this.drivers[i].Location.lat), 2) +
+                    Math.pow(Math.abs(this.ride.startLocation.lng - this.drivers[i].Location.lng), 2));
+            this.drivers[i].relativePath = tempValue;
+        }
+        this.drivers.sort(function (a, b) {
+            if (a.relativePath - b.relativePath > 0) {
+                return -1;
+            }
+            else {
+                return 1;
             }
         });
     };
@@ -1444,7 +1904,8 @@ var RideDetailsComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_ride_service__WEBPACK_IMPORTED_MODULE_1__["RideService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
-            _global__WEBPACK_IMPORTED_MODULE_4__["Globals"]])
+            _global__WEBPACK_IMPORTED_MODULE_5__["Globals"],
+            _admin_ride_making_driver_service__WEBPACK_IMPORTED_MODULE_8__["DriverService"]])
     ], RideDetailsComponent);
     return RideDetailsComponent;
 }());
@@ -1471,7 +1932,7 @@ module.exports = "agm-map {\n  height: 250px;\n  width: 300px;\n}\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <form (ngSubmit)=\"onSubmit()\">\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <button type=\"submit\" class=\"btn btn-success\">Save</button>\n          <button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 50px\" routerLink=\"\">Cancel</button>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label>{{startAddress}}</label>\n            <agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n              <agm-marker\n                [latitude]=\"marker.lat\"\n                [longitude]=\"marker.lng\"\n                [label]=\"marker.label\"\n                id=\"gmApi\"\n                *ngIf=\"marker.locationChoosen\"\n                ></agm-marker>\n            </agm-map>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"status\">Status</label>\n            <input\n              id=\"status\"\n              [disabled]=\"selectedRideStatus !== 'Create'\"\n              [value]=\"selectedRideStatus == undefined ? 'Create' : selectedRideStatus\">\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"carType\">Vehicle type</label>\n            <select\n              id=\"carType\"\n              [disabled]=\"editMode\"\n              #CARTYPE>\n              <option *ngFor=\"let vehicle of vehicleType\"\n                [value]=\"vehicle\"\n                >{{vehicle}}</option>\n            </select>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <form (ngSubmit)=\"onSubmit()\">\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <button type=\"submit\" class=\"btn btn-success\">Save</button>\n          <button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 50px\" routerLink=\"/\">Cancel</button>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel !== 3\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label>{{startAddress}}</label>\n            <agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n              <agm-marker\n                [latitude]=\"marker.lat\"\n                [longitude]=\"marker.lng\"\n                [label]=\"marker.label\"\n                id=\"gmApi\"\n                *ngIf=\"marker.locationChoosen\"\n                ></agm-marker>\n            </agm-map>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"status\">Status</label>\n            <input\n              id=\"status\"\n              [disabled]=\"selectedRideStatus !== 'Create'\"\n              [value]=\"selectedRideStatus == undefined ? 'Create' : selectedRideStatus\">\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"carType\">Vehicle type</label>\n            <select\n              id=\"carType\"\n              [disabled]=\"editMode\"\n              #CARTYPE>\n              <option *ngFor=\"let vehicle of vehicleType\"\n                [value]=\"vehicle\"\n                >{{vehicle}}</option>\n            </select>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1517,6 +1978,7 @@ var RideEditComponent = /** @class */ (function () {
         this.mapService = mapService;
         this.myGlobal = myGlobal;
         this.editMode = false;
+        this.drivers = [];
         this.vehicleType = [
             'Not defined',
             'Car',
@@ -1550,7 +2012,6 @@ var RideEditComponent = /** @class */ (function () {
             _this.initForm();
         });
         if (this.editMode) {
-            console.log('debug' + JSON.stringify(this.ride.startLocation));
             this.startAddress = this.ride.startLocation.streetName;
             if (this.ride.startLocation.streetNumber != undefined)
                 this.startAddress += ' ' + this.ride.startLocation.streetNumber;
@@ -1558,11 +2019,9 @@ var RideEditComponent = /** @class */ (function () {
                 this.startAddress += ', ' + this.ride.startLocation.cityName;
             if (this.ride.startLocation.cityZipcode !== '')
                 this.startAddress += ' ' + this.ride.startLocation.cityZipcode.toString();
-            // this.mapService.findLocation(this.ride.startLocation.cityName + ' ' + this.ride.startLocation.streetName + ' ' + this.ride.startLocation.streetNumber);
         }
     };
     RideEditComponent.prototype.onSubmit = function () {
-        //console.log(this.vehicleSelected.nativeElement.value);
         var carType = _models_car_types__WEBPACK_IMPORTED_MODULE_7__["CarType"].not_defined;
         switch (this.vehicleSelected.nativeElement.value) {
             case 'Car':
@@ -1584,8 +2043,9 @@ var RideEditComponent = /** @class */ (function () {
             if (tempValue[i].match(/^[0-9]+$/) == null) {
                 streetName += tempValue[i] + ' ';
             }
-            else
+            else {
                 streetNumber = parseInt(tempValue[i], 10);
+            }
         }
         for (tempValue = split[1].split(' '), i = 0; i < tempValue.length; ++i) {
             if (tempValue[i].match(/^[0-9]+$/) == null) {
@@ -1595,10 +2055,23 @@ var RideEditComponent = /** @class */ (function () {
                 zipcode = tempValue[i];
         }
         country = split[3];
-        this.rideService.createRide(new _models_location_model__WEBPACK_IMPORTED_MODULE_5__["LocationModel"](this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode.toString()), carType)
-            .subscribe(function (data) {
-            //console.log(data);
-        });
+        if (this.editMode === false) {
+            this.rideService.createRide(new _models_location_model__WEBPACK_IMPORTED_MODULE_5__["LocationModel"](this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode.toString()), carType)
+                .subscribe(function (data) {
+                //console.log(data);
+            });
+        }
+        else {
+            this.rideService.changeAddress(this.ride.rideID, new _models_location_model__WEBPACK_IMPORTED_MODULE_5__["LocationModel"](this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode))
+                .subscribe(function (data) {
+                if (data.change === 'success') {
+                    console.log('TODO, Feedback on successful change address');
+                }
+                else {
+                    console.log('TODO, Feedback on failed change address: ' + data.message);
+                }
+            });
+        }
     };
     RideEditComponent.prototype.onClickMap = function (event) {
         var _this = this;
@@ -1840,6 +2313,7 @@ var RideListComponent = /** @class */ (function () {
                         _this.rides = [];
                     }
                     for (var i = 0; i < data.rides.length; ++i) {
+                        console.log('ride[' + i + ']: status: ' + data.rides[i].Status);
                         _this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_1__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, new _models_comment_model__WEBPACK_IMPORTED_MODULE_7__["CommentModel"](data.rides[i].Comment.Description, data.rides[i].Comment.CreateDate, data.rides[i].Comment.ClientID, data.rides[i].Comment.RideID, data.rides[i].Comment.DriveID, data.rides[i].Comment.Grade), data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipcode), data.rides[i].UserID));
                     }
                 }
@@ -2030,6 +2504,17 @@ var RideService = /** @class */ (function () {
     RideService.prototype.succeededRide = function (rideID) {
         var head = new _angular_http__WEBPACK_IMPORTED_MODULE_2__["Headers"]({ 'Content-Type': 'application/json' });
         return this.http.post('http://localhost:51383/api/ride/successride', JSON.stringify(rideID), { headers: head })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (response) {
+            var data = response.json();
+            return data;
+        }));
+    };
+    RideService.prototype.changeAddress = function (rideID, newLocation) {
+        var head = new _angular_http__WEBPACK_IMPORTED_MODULE_2__["Headers"]({ 'Content-Type': 'application/json' });
+        return this.http.post('http://localhost:51383/api/ride/changeRideAddress', {
+            RideID: rideID,
+            NewLocation: newLocation
+        }, { headers: head })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (response) {
             var data = response.json();
             return data;

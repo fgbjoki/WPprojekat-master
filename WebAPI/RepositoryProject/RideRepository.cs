@@ -34,6 +34,16 @@ namespace RepositoryProject
         {
             Rides newRide = new Rides(location) { AdminName = adminName, UserID = userID, DriverID = driverID, CarType = type, Status = status};
             rides.Add(newRide);
+            if (driverID != -1)
+            {
+                if (((Driver)UserRepository.Instance.GetUserByID(driverID)).CurrentRideID == -1)
+                {
+                    ((Driver)UserRepository.Instance.GetUserByID(driverID)).CurrentRideID = newRide.RideID;
+                    return newRide;
+                }
+                else
+                    return null;
+            }
 
             return newRide;
         }
@@ -49,6 +59,7 @@ namespace RepositoryProject
                 {
                     tempRide.DriverID = driverID;
                     tempRide.Status = RideStatus.accepted;
+
                     return true;
                 }
             }
@@ -64,6 +75,7 @@ namespace RepositoryProject
                 if (driverID == tempRide.DriverID)
                 {
                     tempRide.Status = RideStatus.failed;
+
                     return true;
                 }
                 else
@@ -81,6 +93,7 @@ namespace RepositoryProject
                 if (driverID == tempRide.DriverID)
                 {
                     tempRide.Status = RideStatus.succeeded;
+
                     return true;
                 }
                 else
@@ -130,6 +143,17 @@ namespace RepositoryProject
                 ride.Comment.CreateDate = DateTime.Now;
                 ride.Comment.Description = comment.Description;
                 ride.Comment.Grade = comment.Grade;
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool ChangeAddress(int rideID, Location newLocation)
+        {
+            if (rides.Any(ride => ride.RideID == rideID))
+            {
+                rides.First(ride => ride.RideID == rideID).StartLocation = new Location(newLocation.Lat, newLocation.Lng, newLocation.StreetNumber, newLocation.StreetName, newLocation.CityName, newLocation.CityZipcode);
                 return true;
             }
             else

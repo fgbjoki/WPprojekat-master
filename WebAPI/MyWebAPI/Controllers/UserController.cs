@@ -335,5 +335,57 @@ namespace MyWebAPI.Controllers
                 return responseMessage;
             }
         }
+
+        [AllowAnonymous]
+        [Route("api/user/drivers")]
+        [HttpGet]
+        public HttpResponseMessage GetDrivers()
+        {
+            CookieHeaderValue cookie;
+            if ((cookie = Request.Headers.GetCookies("myCookie").FirstOrDefault()) != null)
+            {
+                string values = cookie.Cookies[0].Value;
+                if (loggedIn.ContainsKey(values))
+                {
+                    User foundUser = null;
+                    loggedIn.TryGetValue(values, out foundUser);
+
+                    List<User> filterDrivers = UserRepository.Instance.GetAllUsers();
+                    if(filterDrivers != null)
+                    {
+                        filterDrivers.RemoveAll(user => user.GetType() != typeof(Driver) || ((Driver)user).CurrentRideID != -1);
+                        List<Driver> driverList = new List<Driver>();
+                        foreach (var item in filterDrivers)
+                        {
+                            driverList.Add((Driver)item);
+                        }
+                        var json = new JavaScriptSerializer().Serialize(driverList);
+                        var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"get\":\"success\", \"drivers\":"+ json +"}", System.Text.Encoding.UTF8, "application/json") };
+                        return responseMessage;
+                    }
+                    else
+                    {
+                        var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"get\":\"failed\", \"message\":\"No available drivers\"}", System.Text.Encoding.UTF8, "application/json") };
+                        return responseMessage;
+                    }
+                }
+                else
+                {
+                    // ako korisnik nije ulogovan
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"get\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                    var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                    responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                    return responseMessage;
+                }
+            }
+            else
+            {
+                // isetkao cookie = ga nema = nije ulgovan
+                var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"get\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                return responseMessage;
+            }
+        }
     }
 }

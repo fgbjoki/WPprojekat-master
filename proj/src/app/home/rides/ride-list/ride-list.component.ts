@@ -38,6 +38,7 @@ export class RideListComponent implements OnInit, OnDestroy {
                     this.rides = [];
                   }
                   for (let i = 0; i < data.rides.length; ++i) {
+                    console.log('ride[' + i + ']: status: ' + data.rides[i].Status);
                     this.rides.push(new RideModel(data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade,
                       data.rides[i].DriverID,
                       data.rides[i].AdminName, data.rides[i].Price,

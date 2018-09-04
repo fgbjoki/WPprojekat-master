@@ -13,6 +13,7 @@ import * as Google from '@agm/core/services/google-maps-types';
 import {Observable, Observer} from 'rxjs';
 import {  } from '@types/googlemaps';
 import {Injectable} from '@angular/core';
+import {DriverModel} from '../../../admin/ride-making/driver.model';
 
 declare const google: any;
 
@@ -30,6 +31,8 @@ export class RideEditComponent implements OnInit {
   selectedCarType: string;
   startAddress: string;
   @ViewChild('CARTYPE') vehicleSelected: ElementRef;
+  drivers: DriverModel[] = [];
+
 
   marker: Marker;
 
@@ -76,18 +79,15 @@ export class RideEditComponent implements OnInit {
         }
       );
     if (this.editMode) {
-      console.log('debug' + JSON.stringify(this.ride.startLocation));
       this.startAddress = this.ride.startLocation.streetName;
       if (this.ride.startLocation.streetNumber != undefined) this.startAddress += ' ' + this.ride.startLocation.streetNumber;
       if (this.ride.startLocation.cityName !== '') this.startAddress += ', ' + this.ride.startLocation.cityName;
       if (this.ride.startLocation.cityZipcode !== '') this.startAddress += ' ' + this.ride.startLocation.cityZipcode.toString();
 
-      // this.mapService.findLocation(this.ride.startLocation.cityName + ' ' + this.ride.startLocation.streetName + ' ' + this.ride.startLocation.streetNumber);
     }
   }
 
   onSubmit() {
-    //console.log(this.vehicleSelected.nativeElement.value);
     let carType = CarType.not_defined;
     switch (this.vehicleSelected.nativeElement.value) {
       case 'Car':
@@ -114,8 +114,9 @@ export class RideEditComponent implements OnInit {
     for (; i < tempValue.length; ++i) {
       if ( tempValue[i].match(/^[0-9]+$/) == null) {
         streetName += tempValue[i] + ' ';
-      } else
+      } else {
         streetNumber = parseInt(tempValue[i], 10);
+      }
     }
 
     for (tempValue = split[1].split(' '), i = 0; i < tempValue.length; ++i) {
@@ -127,12 +128,27 @@ export class RideEditComponent implements OnInit {
 
     country = split[3];
 
-    this.rideService.createRide(new LocationModel(this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode.toString()), carType)
-      .subscribe(
-        (data: any) => {
-          //console.log(data);
-        }
-      );
+    if (this.editMode === false) {
+      this.rideService.createRide(new LocationModel(this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode.toString()), carType)
+        .subscribe(
+          (data: any) => {
+            //console.log(data);
+          }
+        );
+    } else {
+      this.rideService.changeAddress(this.ride.rideID,
+        new LocationModel(this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode))
+        .subscribe(
+          (data: any) => {
+            if (data.change === 'success') {
+              console.log('TODO, Feedback on successful change address');
+            }
+            else {
+              console.log('TODO, Feedback on failed change address: ' + data.message);
+            }
+          }
+        );
+    }
   }
 
   onClickMap(event) {
