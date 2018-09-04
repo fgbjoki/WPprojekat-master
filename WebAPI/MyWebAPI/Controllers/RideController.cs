@@ -395,5 +395,50 @@ namespace MyWebAPI.Controllers
                 return responseMessage;
             }
         }
+
+        [AllowAnonymous]
+        [Route("api/ride/hiredriver")]
+        [HttpPost]
+        public HttpResponseMessage HireDriverToARide([FromBody]HireDriverToARideParams driverRideParams)
+        {
+            CookieHeaderValue cookie;
+            if ((cookie = Request.Headers.GetCookies("myCookie").FirstOrDefault()) != null)
+            {
+                string values = cookie.Cookies[0].Value;
+                if (UserController.loggedIn.ContainsKey(values))
+                {
+                    User foundUser = null;
+                    UserController.loggedIn.TryGetValue(values, out foundUser);
+
+                    if (RideRepository.Instance.HireDriverToARide(driverRideParams.DriverID, driverRideParams.RideID))
+                    {
+                        var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"hire\":\"success\"}", System.Text.Encoding.UTF8, "application/json") };
+                        return responseMessage;
+                    }
+                    else
+                    {
+                        var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"hire\":\"failed\"}", System.Text.Encoding.UTF8, "application/json") };
+                        return responseMessage;
+                    }
+                }
+                else
+                {
+                    // ako korisnik nije ulogovan
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"hire\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                    var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                    responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                    return responseMessage;
+                }
+            }
+            else
+            {
+                // ako nema cookie
+                var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"hire\":\"failed\", \"message\":\"Not logged in\"}", System.Text.Encoding.UTF8, "application/json") };
+                var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                return responseMessage;
+            }
+        }
+
     }
 }

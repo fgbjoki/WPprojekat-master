@@ -21,7 +21,7 @@ export class RideModel {
               driverID: number, adminName: string, price: number,
               comment: CommentModel, rideStatus: RideStatus, startAddress: LocationModel, userID: number) {
     this.rideID = rideID;
-    this.timeMade = timeMade;
+    this.timeMade = new Date(timeMade);
     this.carType = carType;
     this.driverID = driverID;
     this.adminName = adminName;

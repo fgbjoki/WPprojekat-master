@@ -383,6 +383,17 @@ var AdminRideService = /** @class */ (function () {
             return data;
         }));
     };
+    AdminRideService.prototype.hireDriverToRide = function (driverID, rideID) {
+        var head = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["Headers"]({ 'Content-Type': 'application/json' });
+        return this.http.post('http://localhost:51383/api/ride/hiredriver', {
+            DriverID: driverID,
+            RideID: rideID
+        }, { headers: head })
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])(function (response) {
+            var data = response.json();
+            return data;
+        }));
+    };
     AdminRideService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [_angular_http__WEBPACK_IMPORTED_MODULE_1__["Http"], _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]])
@@ -1505,7 +1516,7 @@ module.exports = "input.ng-invalid.ng-touched{\r\n  border: 1px solid red;\r\n}\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <h1 class=\"page-header\">Comment</h1>\n  <div class=\"row\">\n    <div class =\"col-md-3\">\n      <form (ngSubmit)=\"onSubmit()\" #f=\"ngForm\">\n        <div id=\"user-data\">\n          <div class=\"form-group\">\n            <label for=\"description\">Description</label>\n            <textarea\n              [disabled]=\"disabled\"\n              type=\"text\"\n              cols=\"180\"\n              rows=\"10\"\n              id=\"description\"\n              class=\"form-control\"\n              [(ngModel)] = \"descriptionInput\"\n              name=\"description\"\n              required\n              #description=\"ngModel\"></textarea>\n          </div>\n          <span class=\"help-block\" *ngIf=\"!description.valid && description.touched\">Please enter the Description</span>\n          <div class=\"form-group\">\n            <label for=\"date\">Date</label>\n            <input\n              disabled = \"true\"\n              type=\"text\"\n              id=\"date\"\n              class=\"form-control\"\n              [(ngModel)] = \"dateInput\"\n              name=\"date\"\n              required = \"true\"\n              #date=\"ngModel\"\n            >\n          </div>\n          <div class=\"form-group\">\n            <label for=\"grade\">Grade</label>\n            <input\n              [disabled]=\"disabled\"\n              type=\"number\"\n              id=\"grade\"\n              class=\"form-control\"\n              [(ngModel)] = \"gradeInput\"\n              min=\"1\"\n              max=\"5\"\n              value=\"1\"\n              name=\"grade\"\n              required\n              #grade=\"ngModel\">\n        </div>\n        <button\n          type=\"submit\"\n          class=\"btn btn-primary\"\n          [disabled]=\"!f.valid && (grade.value >= 0 && grade.value <=5) && disabled\"\n          [hidden]=\"disabled\">Comment</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <h1 class=\"page-header\">Comment</h1>\n  <div class=\"row\">\n    <div class =\"col-md-3\">\n      <form (ngSubmit)=\"onSubmit()\" #f=\"ngForm\">\n        <div id=\"user-data\">\n          <div class=\"form-group\">\n            <label for=\"description\">Description</label>\n            <textarea\n              [disabled]=\"disabled\"\n              type=\"text\"\n              cols=\"180\"\n              rows=\"10\"\n              id=\"description\"\n              class=\"form-control\"\n              [(ngModel)] = \"descriptionInput\"\n              name=\"description\"\n              required\n              #description=\"ngModel\"></textarea>\n          </div>\n          <span class=\"help-block\" *ngIf=\"!description.valid && description.touched\">Please enter the Description</span>\n          <div class=\"form-group\" *ngIf=\"description.value === ''\">\n            <label for=\"date\">Date</label>\n            <input\n              disabled = \"true\"\n              type=\"text\"\n              id=\"date\"\n              class=\"form-control\"\n              name=\"date\"\n              required = \"true\"\n              [ngModel]=\"dateInput\"\n            >\n          </div>\n          <div class=\"form-group\">\n            <label for=\"grade\">Grade</label>\n            <input\n              [disabled]=\"disabled\"\n              type=\"number\"\n              id=\"grade\"\n              class=\"form-control\"\n              [(ngModel)] = \"gradeInput\"\n              min=\"1\"\n              max=\"5\"\n              value=\"1\"\n              name=\"grade\"\n              required\n              #grade=\"ngModel\">\n        </div>\n        <button\n          type=\"submit\"\n          class=\"btn btn-primary\"\n          [disabled]=\"!f.valid && (grade.value >= 0 && grade.value <=5) && disabled\"\n          [hidden]=\"disabled\">Comment</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -1547,12 +1558,13 @@ var CommentComponent = /** @class */ (function () {
         this.disabled = true;
     }
     CommentComponent.prototype.ngOnInit = function () {
-        if (this.comment.Description !== '' || this.comment.Description === null) {
+        if (this.comment.Description !== '' || this.comment.Description == null) {
             console.log('copied');
             this.descriptionInput = this.comment.Description;
             this.gradeInput = this.comment.Grade;
-            this.dateInput = this.comment.CreateDate;
+            console.log('date: ' + new Date(this.comment.CreateDate).getHours());
         }
+        this.dateInput = this.comment.CreateDate;
         console.log('[debug] description: \'' + this.comment.Description + '\'');
         console.log('[debug] rideStatus: ' + this.rideStatus);
         if (this.myGlobals.myUser.accessLevel === 2) {
@@ -1686,7 +1698,7 @@ module.exports = "agm-map {\r\n  height: 100px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus > 2\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n\n<!-- Admin part -->\n<div class=\"row\" *ngIf=\"ride.rideStatus === 0 && myGlobals.myUser.accessLevel === 3\">\n  <div class=\"col-xs-6\">\n    <div class=\"form-group\">\n      <label for=\"driver\">Drivers</label> &nbsp;\n      <select\n        id=\"driver\"\n        #driver>\n        <option\n          *ngFor=\"let d of drivers\" [ngValue]=\"d\">{{d.Username}}</option>\n      </select>\n      <button type=\"button\" class=\"btn btn-success\" [disabled]=\"driver.selectedIndex < 0\">Hire</button>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus >= 4\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n\n<!-- Admin part -->\n<div class=\"row\" *ngIf=\"ride.rideStatus === 0 && myGlobals.myUser.accessLevel === 3\">\n  <div class=\"col-xs-6\">\n    <div class=\"form-group\">\n      <label for=\"driver\">Drivers</label> &nbsp;\n      <select\n        id=\"driver\"\n        #driver>\n        <option\n          *ngFor=\"let d of drivers\" [ngValue]=\"d\">{{d.Username}}</option>\n      </select> &nbsp;\n      <button type=\"button\" class=\"btn btn-success\" [disabled]=\"driver.selectedIndex < 0\" (click)=\"hireTheSelectedDriver()\">Hire</button>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1709,6 +1721,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _admin_ride_making_driver_model__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../admin/ride-making/driver.model */ "./src/app/admin/ride-making/driver.model.ts");
 /* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
 /* harmony import */ var _admin_ride_making_driver_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../admin/ride-making/driver.service */ "./src/app/admin/ride-making/driver.service.ts");
+/* harmony import */ var _admin_ride_making_admin_ride_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../admin/ride-making/admin.ride.service */ "./src/app/admin/ride-making/admin.ride.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1727,13 +1740,15 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var RideDetailsComponent = /** @class */ (function () {
-    function RideDetailsComponent(rideService, route, router, myGlobals, driverService) {
+    function RideDetailsComponent(rideService, route, router, myGlobals, driverService, adminService) {
         this.rideService = rideService;
         this.route = route;
         this.router = router;
         this.myGlobals = myGlobals;
         this.driverService = driverService;
+        this.adminService = adminService;
         this.rideStatus = '';
         this.drivers = [];
     }
@@ -1916,6 +1931,23 @@ var RideDetailsComponent = /** @class */ (function () {
             }
         });
     };
+    RideDetailsComponent.prototype.hireTheSelectedDriver = function () {
+        var _this = this;
+        this.adminService.hireDriverToRide(this.drivers.find(function (d) { return d.Username === _this.driverSelected.nativeElement.value; }).DriverID, this.ride.rideID)
+            .subscribe(function (data) {
+            if (data.hire === 'success') {
+                _this.router.navigateByUrl('');
+                console.log('[TODO] Feedback, succeeded hire');
+            }
+            else {
+                console.log('[TODO] Feedback, succeeded error');
+            }
+        });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('driver'),
+        __metadata("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ElementRef"])
+    ], RideDetailsComponent.prototype, "driverSelected", void 0);
     RideDetailsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-ride-details',
@@ -1926,7 +1958,8 @@ var RideDetailsComponent = /** @class */ (function () {
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["ActivatedRoute"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
             _global__WEBPACK_IMPORTED_MODULE_5__["Globals"],
-            _admin_ride_making_driver_service__WEBPACK_IMPORTED_MODULE_8__["DriverService"]])
+            _admin_ride_making_driver_service__WEBPACK_IMPORTED_MODULE_8__["DriverService"],
+            _admin_ride_making_admin_ride_service__WEBPACK_IMPORTED_MODULE_9__["AdminRideService"]])
     ], RideDetailsComponent);
     return RideDetailsComponent;
 }());
@@ -2757,7 +2790,7 @@ __webpack_require__.r(__webpack_exports__);
 var RideModel = /** @class */ (function () {
     function RideModel(carType, rideID, timeMade, driverID, adminName, price, comment, rideStatus, startAddress, userID) {
         this.rideID = rideID;
-        this.timeMade = timeMade;
+        this.timeMade = new Date(timeMade);
         this.carType = carType;
         this.driverID = driverID;
         this.adminName = adminName;

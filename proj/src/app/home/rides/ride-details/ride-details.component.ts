@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {RideModel} from '../../../models/ride.model';
 import {RideService} from '../ride.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
@@ -8,6 +8,7 @@ import {Globals} from '../../../global';
 import {DriverModel} from '../../../admin/ride-making/driver.model';
 import {interval} from 'rxjs';
 import {DriverService} from '../../../admin/ride-making/driver.service';
+import {AdminRideService} from '../../../admin/ride-making/admin.ride.service';
 
 @Component({
   selector: 'app-ride-details',
@@ -15,6 +16,8 @@ import {DriverService} from '../../../admin/ride-making/driver.service';
   styleUrls: ['./ride-details.component.css']
 })
 export class RideDetailsComponent implements OnInit {
+  @ViewChild('driver') driverSelected: ElementRef;
+
   ride: RideModel;
   id: number;
   rideStatus = '';
@@ -27,7 +30,8 @@ export class RideDetailsComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               public myGlobals: Globals,
-              private driverService: DriverService) {
+              private driverService: DriverService,
+              private adminService: AdminRideService) {
   }
 
   isHidden(): boolean {
@@ -225,7 +229,17 @@ export class RideDetailsComponent implements OnInit {
   }
 
   hireTheSelectedDriver() {
-    
+    this.adminService.hireDriverToRide(this.drivers.find(d => d.Username === this.driverSelected.nativeElement.value).DriverID, this.ride.rideID)
+      .subscribe(
+        (data: any) => {
+          if (data.hire === 'success') {
+            this.router.navigateByUrl('');
+            console.log('[TODO] Feedback, succeeded hire');
+          } else {
+            console.log('[TODO] Feedback, succeeded error');
+          }
+        }
+      );
   }
 
 }

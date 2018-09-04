@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div class="row" *ngIf="ride.rideStatus > 2">
+<div class="row" *ngIf="ride.rideStatus >= 4">
   <div class="col-xs-12">
     <app-comment
     [comment]="ride.comment"

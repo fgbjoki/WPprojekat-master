@@ -33,4 +33,21 @@ export class AdminRideService {
         )
       );
   }
+
+  hireDriverToRide(driverID: number, rideID: number) {
+    const head = new Headers({ 'Content-Type': 'application/json' });
+    return this.http.post('http://localhost:51383/api/ride/hiredriver',
+      {
+        DriverID: driverID,
+        RideID: rideID
+      }, {headers: head })
+      .pipe(
+        map(
+          (response: Response) => {
+            const data = response.json();
+            return data;
+          }
+        )
+      );
+  }
 }

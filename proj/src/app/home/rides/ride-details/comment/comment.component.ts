@@ -27,12 +27,13 @@ export class CommentComponent implements OnInit {
   constructor(private myGlobals: Globals, private commentService: CommentService) { }
 
   ngOnInit() {
-    if (this.comment.Description !== '' || this.comment.Description === null) {
+    if (this.comment.Description !== '' || this.comment.Description == null) {
       console.log('copied');
       this.descriptionInput = this.comment.Description;
       this.gradeInput = this.comment.Grade;
-      this.dateInput = this.comment.CreateDate;
+      console.log('date: ' + new Date(this.comment.CreateDate).getHours());
     }
+    this.dateInput = this.comment.CreateDate;
     console.log('[debug] description: \'' + this.comment.Description + '\'');
     console.log('[debug] rideStatus: ' + this.rideStatus);
 

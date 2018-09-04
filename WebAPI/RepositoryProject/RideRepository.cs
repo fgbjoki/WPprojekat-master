@@ -159,5 +159,21 @@ namespace RepositoryProject
             else
                 return false;
         }
+
+        public bool HireDriverToARide(int driverID, int rideID)
+        {
+            if (rides.Any(ride => ride.RideID == rideID))
+            {
+                Driver tempDriver = (Driver)UserRepository.Instance.GetUserByID(driverID);
+                if (tempDriver.CurrentRideID != -1)
+                    return false;
+
+                tempDriver.CurrentRideID = rideID;
+                rides.First(ride => ride.RideID == rideID).DriverID = driverID;
+                return true;
+            }
+            else
+                return false;
+        }
     }
 }
