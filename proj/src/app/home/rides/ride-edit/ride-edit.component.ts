@@ -9,10 +9,7 @@ import {Globals} from '../../../global';
 import {RideModel} from '../../../models/ride.model';
 import {CarType} from '../../../models/car.types';
 import { } from '@types/googlemaps';
-import * as Google from '@agm/core/services/google-maps-types';
-import {Observable, Observer} from 'rxjs';
 import {  } from '@types/googlemaps';
-import {Injectable} from '@angular/core';
 import {DriverModel} from '../../../admin/ride-making/driver.model';
 
 declare const google: any;
@@ -28,13 +25,14 @@ export class RideEditComponent implements OnInit {
   editMode = false;
   ride: RideModel;
   selectedRideStatus: string;
-  selectedCarType: string;
   startAddress: string;
+  endAddress: string;
   @ViewChild('CARTYPE') vehicleSelected: ElementRef;
   drivers: DriverModel[] = [];
 
 
   marker: Marker;
+  endMarker: Marker;
 
   vehicleType: string[] = [
     'Not defined',
@@ -42,21 +40,24 @@ export class RideEditComponent implements OnInit {
     'Van'
   ];
 
-  rideStatus = [
-    'Created - On waiting',
-    'Formed',
-    'Processed',
-    'Accepted',
-    'Called off',
-    'Failed',
-    'Succeeded'
-  ];
 
   constructor(private route: ActivatedRoute,
               private rideService: RideService,
               private mapService: MapService,
               public myGlobal: Globals) {
     this.marker = new class implements Marker {
+      label: string;
+      lat: number;
+      lng: number;
+      locationChoosen: boolean;
+    };
+
+    this.marker.lat = 45.267136;
+    this.marker.lng = 19.833549;
+    this.marker.label = 'A';
+    this.marker.locationChoosen = false;
+
+    this.endMarker = new class implements Marker {
       label: string;
       lat: number;
       lng: number;
@@ -78,12 +79,17 @@ export class RideEditComponent implements OnInit {
           this.initForm();
         }
       );
-    if (this.editMode) {
+    if (this.editMode && this.myGlobal.myUser.accessLevel === 1) {
       this.startAddress = this.ride.startLocation.streetName;
       if (this.ride.startLocation.streetNumber != undefined) this.startAddress += ' ' + this.ride.startLocation.streetNumber;
       if (this.ride.startLocation.cityName !== '') this.startAddress += ', ' + this.ride.startLocation.cityName;
       if (this.ride.startLocation.cityZipcode !== '') this.startAddress += ' ' + this.ride.startLocation.cityZipcode.toString();
-
+    }
+    else if ( this.editMode && this.myGlobal.myUser.accessLevel === 2) {
+      this.startAddress = this.ride.startLocation.streetName;
+      if (this.ride.startLocation.streetNumber != undefined) this.startAddress += ' ' + this.ride.startLocation.streetNumber;
+      if (this.ride.startLocation.cityName !== '') this.startAddress += ', ' + this.ride.startLocation.cityName;
+      if (this.ride.startLocation.cityZipcode !== '') this.startAddress += ' ' + this.ride.startLocation.cityZipcode.toString();
     }
   }
 
@@ -152,18 +158,33 @@ export class RideEditComponent implements OnInit {
   }
 
   onClickMap(event) {
-    this.marker.lat = event.coords.lat;
-    this.marker.lng = event.coords.lng;
-    this.marker.locationChoosen = true;
+    if (this.myGlobal.myUser.accessLevel === 1) {
+      this.marker.lat = event.coords.lat;
+      this.marker.lng = event.coords.lng;
+      this.marker.locationChoosen = true;
 
-    var latlng = new google.maps.LatLng(this.marker.lat, this.marker.lng);
-    this.mapService.geocode(latlng)
-      .subscribe(
-        (data: any) => {
-          console.log(data[0].formatted_address);
-          this.startAddress = data[0].formatted_address;
-        }
-      );
+      var latlng = new google.maps.LatLng(this.marker.lat, this.marker.lng);
+      this.mapService.geocode(latlng)
+        .subscribe(
+          (data: any) => {
+            console.log(data[0].formatted_address);
+            this.startAddress = data[0].formatted_address;
+          }
+        );
+    } else if (this.myGlobal.myUser.accessLevel === 2) {
+      this.endMarker.lat = event.coords.lat;
+      this.endMarker.lng = event.coords.lng;
+      this.endMarker.locationChoosen = true;
+
+      var latlng = new google.maps.LatLng(this.endMarker.lat, this.endMarker.lng);
+      this.mapService.geocode(latlng)
+        .subscribe(
+          (data: any) => {
+            console.log(data[0].formatted_address);
+            this.endAddress = data[0].formatted_address;
+          }
+        );
+    }
   }
 
   private initForm() {

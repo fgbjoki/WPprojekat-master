@@ -10,7 +10,8 @@
       <div class="row" *ngIf="myGlobal.myUser.accessLevel !== 3">
         <div class="col-xs-6">
           <div class="form-group">
-            <label>{{startAddress}}</label>
+            <label>Start: {{startAddress}}</label>
+            <label *ngIf="ride.rideStatus === 6">End: {{endAddress}}</label>
             <agm-map [latitude]="marker.lat" [longitude]="marker.lng" (mapClick)="onClickMap($event)" [zoom]="14">
               <agm-marker
                 [latitude]="marker.lat"
@@ -19,18 +20,14 @@
                 id="gmApi"
                 *ngIf="marker.locationChoosen"
                 ></agm-marker>
+              <agm-marker
+                [latitude]="endMarker.lat"
+                [longitude]="endMarker.lng"
+                [label]="endMarker.label"
+                id="gmApi1"
+                *ngIf="endMarker.locationChoosen"
+              ></agm-marker>
             </agm-map>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-6">
-          <div class="form-group">
-            <label for="status">Status</label>
-            <input
-              id="status"
-              [disabled]="selectedRideStatus !== 'Create'"
-              [value]="selectedRideStatus == undefined ? 'Create' : selectedRideStatus">
           </div>
         </div>
       </div>

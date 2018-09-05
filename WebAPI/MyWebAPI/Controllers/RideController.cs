@@ -39,7 +39,7 @@ namespace MyWebAPI.Controllers
 
                         else if (foundUser.GetType() == typeof(Driver))
                         {
-                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff);
+                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff || ride.Status == RideStatus.succeeded || ride.Status == RideStatus.failed);
                             listOfRides.RemoveAll(ride => ride.DriverID != 0 && ride.DriverID != foundUser.ID);
                             listOfRides.RemoveAll(ride =>
                                 ride.CarType != ((Driver)foundUser).Vehicle.VehicleType && ride.CarType != VehicleType.not_defined
@@ -47,7 +47,7 @@ namespace MyWebAPI.Controllers
                         }
                         else
                         {
-                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff);
+                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff || ride.Status == RideStatus.succeeded || ride.Status == RideStatus.failed);
                         }
                     }
                     var json = new JavaScriptSerializer().Serialize(listOfRides == null ? new List<Rides>(): listOfRides);

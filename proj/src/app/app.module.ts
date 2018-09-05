@@ -50,14 +50,14 @@ const appRoutes: Routes = [
       { path: ':id', component: RideDetailsComponent},
       { path: ':id/edit', component: RideEditComponent }
     ]},
-  { path: 'profile', component: ProfileComponent, children: [
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], children: [
       { path: 'registration', component: RegisterComponent},
       { path: 'login', component: LoginComponent},
       { path: 'modify', canActivate: [AuthGuard], component: ModifyComponent}
     ]},
   { path: 'myPosition', component: DriverPositionComponent, canActivate: [DriverGuardService]},
   { path: 'adminPanel', component: AdminComponent, canActivate: [AdminGuard]}
-];
+  ];
 
 @NgModule({
   declarations: [

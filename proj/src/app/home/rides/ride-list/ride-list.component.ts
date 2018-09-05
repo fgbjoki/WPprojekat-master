@@ -5,8 +5,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {LocationModel} from '../../../models/location.model';
 
 import {interval} from 'rxjs';
-import {CarType} from '../../../models/car.types';
-import {RideStatus} from '../../../models/ride.status';
 import {Globals} from '../../../global';
 import {CommentModel} from '../../../models/comment.model';
 
@@ -38,7 +36,6 @@ export class RideListComponent implements OnInit, OnDestroy {
                     this.rides = [];
                   }
                   for (let i = 0; i < data.rides.length; ++i) {
-                    console.log('ride[' + i + ']: status: ' + data.rides[i].Status);
                     this.rides.push(new RideModel(data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade,
                       data.rides[i].DriverID,
                       data.rides[i].AdminName, data.rides[i].Price,
@@ -61,7 +58,6 @@ export class RideListComponent implements OnInit, OnDestroy {
       .subscribe(
         (data: any) => {
           if (data.get === 'success') {
-            // console.log('success array size: ' + data.rides.length);
             if (data.rides.length > 0) {
               this.rides = [];
             }
@@ -77,7 +73,6 @@ export class RideListComponent implements OnInit, OnDestroy {
           } else {
             this.rides = [];
           }
-         /* console.log('array filled: ' + JSON.stringify(this.rides));*/
         }
       );
 
@@ -88,5 +83,7 @@ export class RideListComponent implements OnInit, OnDestroy {
   onNewRide() {
     this.router.navigate(['new'], {relativeTo: this.route});
   }
+
+
 
 }

@@ -14,7 +14,6 @@ export class RideItemComponent implements OnInit {
   rideStatus = '';
 
   ngOnInit() {
-    // console.log('[debug ride-item]: ' + this.ride.startLocation.streetNumber + ' with index: ' + this.index);
     switch (this.ride.rideStatus) {
       case RideStatus.created:
         this.rideStatus = 'Created';

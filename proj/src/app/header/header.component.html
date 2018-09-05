@@ -6,6 +6,7 @@
           <li routerLinkActive="active"><a routerLink="/" *ngIf="myGlobal.myUser.username !== ''">Home</a></li>
           <li routerLinkActive="active"><a routerLink="/myPosition" *ngIf="myGlobal.myUser.accessLevel === 2 && myGlobal.myUser.username !== ''" >My Position</a></li>
           <li routerLinkActive="active"><a routerLink="/adminPanel" *ngIf="myGlobal.myUser.accessLevel === 3 && myGlobal.myUser.username !== ''">Admin Panel</a> </li>
+          <li routerLinkActive="active"><a routerLink="/allRides">Rides</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown" routerLinkActive="active" *ngIf="myGlobal.myUser.username ===''" appDropdown>

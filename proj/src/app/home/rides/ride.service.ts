@@ -35,6 +35,20 @@ export class RideService {
       );
   }
 
+  public getAllRides() {
+    return this.http
+      .get('http://localhost:51383/api/allRides')
+      .pipe(
+        map(
+          (response: Response) => {
+            const data = response.json();
+            this.populateRides(data);
+            return data;
+          }
+        )
+      );
+  }
+
   public cancelRide(rideID: number) {
     const head = new Headers({ 'Content-Type': 'application/json' });
     return this.http.post('http://localhost:51383/api/ride/cancelride',
