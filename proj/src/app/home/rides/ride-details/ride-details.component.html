@@ -5,7 +5,6 @@
 </div>
 <div class="row" [hidden]="isHidden()">
   <button type="button" class="btn btn-warning"><a [routerLink]="'edit'">Modify</a></button>
-  <button type="button" class="btn btn-warning"><a [routerLink]="'edit'">Success</a></button>
 </div>
 <div class="row">
   <div class="col-xs-12">
@@ -13,7 +12,7 @@
     <h1 *ngIf="ride.rideStatus === 6">End: {{ride.endLocation.streetName}} {{ ride.endLocation.streetNumber}}</h1>
   </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="ride.rideStatus !== 6">
   <div class="col-xs-12">
     <div class="btn-group" appDropdown>
       <button type="button"
@@ -25,7 +24,7 @@
         <li><a style="cursor:pointer" *ngIf="myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)" (click)="OnClick('accept')">Accept</a></li>
         <li><a style="cursor:pointer" *ngIf="myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)" (click)="OnClick('cancel')">Cancel</a></li>
         <li><a style="cursor:pointer" *ngIf="myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)" (click)="OnClick('failed')">Failed</a></li>
-        <li><a style="cursor:pointer" </li>
+        <li><a style="cursor:pointer" *ngIf="myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)" [routerLink]="'edit'">Success</a> </li>
       </ul>
     </div>
   </div>
@@ -35,7 +34,7 @@
     Status: {{ rideStatus }}
   </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="ride.rideStatus === 6">
   <div class="col-xs-12">
     Price: {{ ride.price }}
   </div>
@@ -46,7 +45,8 @@
     <app-comment
     [comment]="ride.comment"
     [rideStatus]="ride.rideStatus"
-    [rideID]="ride.rideID"></app-comment>
+    [rideID]="ride.rideID"
+    [price]="ride.price"></app-comment>
   </div>
 </div>
 

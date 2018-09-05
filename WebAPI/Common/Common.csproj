@@ -53,6 +53,7 @@
     <Compile Include="Parameters\CommentParams.cs" />
     <Compile Include="Parameters\DriverRegistrationParameters.cs" />
     <Compile Include="Parameters\HireDriverToARide.cs" />
+    <Compile Include="Parameters\SucceededRideParams.cs" />
     <Compile Include="Rides.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

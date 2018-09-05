@@ -41,6 +41,9 @@ export class RideDetailsComponent implements OnInit {
         returnValue = false;
       }
     }
+    console.log('access: ' + this.myGlobals.myUser.accessLevel);
+    console.log('ridestatus: ' + this.ride.rideStatus);
+    console.log('returnValue: ' + returnValue);
     return returnValue;
   }
 
@@ -77,8 +80,9 @@ export class RideDetailsComponent implements OnInit {
           }
         }
       );
+
     if (this.myGlobals.myUser.accessLevel === 3) {
-      this.result = interval(6000)
+      this.result = interval(1000)
         .subscribe(
           (r) => {
             this.driverService.getDrivers()
@@ -134,7 +138,6 @@ export class RideDetailsComponent implements OnInit {
         }
       }
       if (exists === false && ( this.ride.carType === data.drivers[i].Vehicle.VehicleType || this.ride.carType === CarType.not_defined)) {
-        console.log('added + ' + data.drivers[i].Username);
         this.drivers.push(new DriverModel(data.drivers[i].ID, data.drivers[i].Username,
           data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
       }
@@ -146,7 +149,6 @@ export class RideDetailsComponent implements OnInit {
       this.rideService.cancelRide(this.ride.rideID)
         .subscribe(
           (data: any) => {
-            console.log('data: ' + data);
             if (data.cancel === 'success') {
               this.router.navigateByUrl('');
               console.log('[TODO] Feedback, successfully canceled ride');
@@ -163,7 +165,7 @@ export class RideDetailsComponent implements OnInit {
       this.failedRide();
     }
     else if (toExecute === 'success') {
-      this.successRide();
+      this.router.navigateByUrl('edit');
     }
   }
 
@@ -190,20 +192,6 @@ export class RideDetailsComponent implements OnInit {
             console.log('[TODO] Feedback, failed ride');
           } else {
             console.log('[TODO] Feedback, ride couldn\'t be failed: ' + data.message);
-          }
-        }
-      );
-  }
-
-  successRide() {
-    this.rideService.succeededRide(this.ride.rideID)
-      .subscribe(
-        (data: any) => {
-          if (data.succeeded === 'success') {
-            this.router.navigateByUrl('');
-            console.log('[TODO] Feedback, succeeded ride');
-          } else {
-            console.log('[TODO] Feedback, succeeded error: ' + data.message);
           }
         }
       );

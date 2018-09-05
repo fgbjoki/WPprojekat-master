@@ -47,8 +47,10 @@ namespace Common
 
         public Rides(Location startLocation)
         {
+            EndLocation = new Location();
             RideID = ++idCounter;
             Comment = new Comment() { RideID = RideID };
+            Price = 0;
             TimeMade = DateTime.Now;
             StartLocation = startLocation;
             DriverID = 0;

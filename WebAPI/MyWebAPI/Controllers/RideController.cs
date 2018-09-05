@@ -39,7 +39,8 @@ namespace MyWebAPI.Controllers
 
                         else if (foundUser.GetType() == typeof(Driver))
                         {
-                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff || ride.Status == RideStatus.succeeded || ride.Status == RideStatus.failed);
+                            listOfRides.RemoveAll(ride => ride.Status == RideStatus.calledOff || ride.Status == RideStatus.succeeded);
+                            listOfRides.RemoveAll(ride => !ride.Comment.Description.Equals("") && ride.Status == RideStatus.failed);
                             listOfRides.RemoveAll(ride => ride.DriverID != 0 && ride.DriverID != foundUser.ID);
                             listOfRides.RemoveAll(ride =>
                                 ride.CarType != ((Driver)foundUser).Vehicle.VehicleType && ride.CarType != VehicleType.not_defined
@@ -237,7 +238,7 @@ namespace MyWebAPI.Controllers
         [AllowAnonymous]
         [Route("api/ride/successride")]
         [HttpPost]
-        public HttpResponseMessage SuccessRide([FromBody]int rideID)
+        public HttpResponseMessage SuccessRide([FromBody]SucceededRideParams rideParams)
         {
             CookieHeaderValue cookie;
             if ((cookie = Request.Headers.GetCookies("myCookie").FirstOrDefault()) != null)
@@ -250,7 +251,7 @@ namespace MyWebAPI.Controllers
 
                     HttpResponseMessage responseMessage = null;
 
-                    if (RideRepository.Instance.SucceededRide(rideID, foundUser.ID))
+                    if (RideRepository.Instance.SucceededRide(rideParams.rideID, foundUser.ID, rideParams.Location, rideParams.Price))
                         if (UserRepository.Instance.ChangeDriverState(foundUser.ID, -1))
                             responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"succeeded\":\"success\", \"message\":\"Ride succeeded\"}", System.Text.Encoding.UTF8, "application/json") };
                     else

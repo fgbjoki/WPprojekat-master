@@ -50,7 +50,7 @@ const appRoutes: Routes = [
       { path: ':id', component: RideDetailsComponent},
       { path: ':id/edit', component: RideEditComponent }
     ]},
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard], children: [
+  { path: 'profile', component: ProfileComponent, children: [
       { path: 'registration', component: RegisterComponent},
       { path: 'login', component: LoginComponent},
       { path: 'modify', canActivate: [AuthGuard], component: ModifyComponent}

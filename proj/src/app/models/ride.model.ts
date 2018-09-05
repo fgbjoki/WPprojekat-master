@@ -19,7 +19,7 @@ export class RideModel {
 
   constructor(carType: CarType, rideID: number, timeMade: Date,
               driverID: number, adminName: string, price: number,
-              comment: CommentModel, rideStatus: RideStatus, startAddress: LocationModel, userID: number) {
+              comment: CommentModel, rideStatus: RideStatus, startAddress: LocationModel, endLocation: LocationModel, userID: number) {
     this.rideID = rideID;
     this.timeMade = new Date(timeMade);
     this.carType = carType;
@@ -29,6 +29,7 @@ export class RideModel {
     this.comment = comment;
     this.rideStatus = rideStatus;
     this.startLocation = startAddress;
+    this.endLocation = endLocation;
     this.userID = userID;
   }
 }

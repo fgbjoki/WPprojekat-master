@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {RideService} from '../ride.service';
 import {RideStatus} from '../../../models/ride.status';
 import {Marker} from '../models/marker.model';
@@ -44,7 +44,8 @@ export class RideEditComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private rideService: RideService,
               private mapService: MapService,
-              public myGlobal: Globals) {
+              public myGlobal: Globals,
+              private router: Router) {
     this.marker = new class implements Marker {
       label: string;
       lat: number;
@@ -64,10 +65,10 @@ export class RideEditComponent implements OnInit {
       locationChoosen: boolean;
     };
 
-    this.marker.lat = 45.267136;
-    this.marker.lng = 19.833549;
-    this.marker.label = 'A';
-    this.marker.locationChoosen = false;
+    this.endMarker.lat = 45.267136;
+    this.endMarker.lng = 19.833549;
+    this.endMarker.label = 'B';
+    this.endMarker.locationChoosen = false;
   }
 
   ngOnInit() {
@@ -81,15 +82,22 @@ export class RideEditComponent implements OnInit {
       );
     if (this.editMode && this.myGlobal.myUser.accessLevel === 1) {
       this.startAddress = this.ride.startLocation.streetName;
-      if (this.ride.startLocation.streetNumber != undefined) this.startAddress += ' ' + this.ride.startLocation.streetNumber;
+      if (this.ride.startLocation.streetNumber != null) this.startAddress += ' ' + this.ride.startLocation.streetNumber;
       if (this.ride.startLocation.cityName !== '') this.startAddress += ', ' + this.ride.startLocation.cityName;
-      if (this.ride.startLocation.cityZipcode !== '') this.startAddress += ' ' + this.ride.startLocation.cityZipcode.toString();
+      if (this.ride.startLocation.cityZipcode !== '') this.startAddress += ' ' + this.ride.startLocation.cityZipcode;
     }
     else if ( this.editMode && this.myGlobal.myUser.accessLevel === 2) {
       this.startAddress = this.ride.startLocation.streetName;
-      if (this.ride.startLocation.streetNumber != undefined) this.startAddress += ' ' + this.ride.startLocation.streetNumber;
-      if (this.ride.startLocation.cityName !== '') this.startAddress += ', ' + this.ride.startLocation.cityName;
-      if (this.ride.startLocation.cityZipcode !== '') this.startAddress += ' ' + this.ride.startLocation.cityZipcode.toString();
+      if (this.ride.startLocation.streetNumber != null) this.startAddress += ' ' + this.ride.startLocation.streetNumber;
+      if (this.ride.startLocation.cityName !== '' || this.ride.startLocation.cityName != null) this.startAddress += ', ' + this.ride.startLocation.cityName;
+      if (this.ride.startLocation.cityZipcode !== '' || this.ride.startLocation.cityName != null) this.startAddress += ' ' + this.ride.startLocation.cityZipcode;
+
+      if(this.ride.endLocation.streetName !== '' || this.ride.endLocation.streetName != null) {
+        this.endAddress = this.ride.endLocation.streetName;
+        if (this.ride.endLocation.streetNumber != null) this.endAddress += ' ' + this.ride.endLocation.streetNumber;
+        if (this.ride.endLocation.cityName !== '') this.endAddress += ', ' + this.ride.endLocation.cityName;
+        if (this.ride.endLocation.cityZipcode !== '') this.endAddress += ' ' + this.ride.endLocation.cityZipcode;
+      }
     }
   }
 
@@ -135,7 +143,7 @@ export class RideEditComponent implements OnInit {
     country = split[3];
 
     if (this.editMode === false) {
-      this.rideService.createRide(new LocationModel(this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode.toString()), carType)
+      this.rideService.createRide(new LocationModel(this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode), carType)
         .subscribe(
           (data: any) => {
             //console.log(data);
@@ -167,7 +175,6 @@ export class RideEditComponent implements OnInit {
       this.mapService.geocode(latlng)
         .subscribe(
           (data: any) => {
-            console.log(data[0].formatted_address);
             this.startAddress = data[0].formatted_address;
           }
         );
@@ -180,11 +187,54 @@ export class RideEditComponent implements OnInit {
       this.mapService.geocode(latlng)
         .subscribe(
           (data: any) => {
-            console.log(data[0].formatted_address);
             this.endAddress = data[0].formatted_address;
           }
         );
     }
+  }
+
+  OnFinish() {
+    console.log('price ' + this.ride.price);
+    var split = this.endAddress.split(',');
+
+    var tempValue = split[0].split(' ');
+
+    var streetName = '';
+    var streetNumber: number;
+
+    var city = ''
+    var zipcode = '';
+
+    var country: string;
+
+    let i = 0;
+    for (; i < tempValue.length; ++i) {
+      if ( tempValue[i].match(/^[0-9]+$/) == null) {
+        streetName += tempValue[i] + ' ';
+      } else {
+        streetNumber = parseInt(tempValue[i], 10);
+      }
+    }
+
+    for (tempValue = split[1].split(' '), i = 0; i < tempValue.length; ++i) {
+      if ( tempValue[i].match(/^[0-9]+$/) == null) {
+        city += tempValue[i] + ' ';
+      } else
+        zipcode = tempValue[i];
+    }
+
+    this.rideService.succeededRide(this.ride.rideID, new LocationModel(this.endMarker.lat, this.endMarker.lng,
+      streetNumber, streetName, city, zipcode), this.ride.price)
+      .subscribe(
+        (data: any) => {
+          if (data.succeeded === 'success') {
+            this.router.navigateByUrl('');
+            console.log('[TODO] Feedback, succeeded ride');
+          } else {
+            console.log('[TODO] Feedback, succeeded error: ' + data.message);
+          }
+        }
+      );
   }
 
   private initForm() {

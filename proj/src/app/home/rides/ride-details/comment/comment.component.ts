@@ -15,23 +15,25 @@ export class CommentComponent implements OnInit {
   @Input() comment: CommentModel;
   @Input() rideStatus: RideStatus;
   @Input() rideID: number;
+  @Input() price: number;
 
   @ViewChild('f') commentForm: NgForm;
   descriptionInput: string;
   gradeInput: number;
   dateInput: Date;
+  priceInput: number;
 
   disabled = true;
 
 
-  constructor(private myGlobals: Globals, private commentService: CommentService) { }
+  constructor(public myGlobals: Globals, private commentService: CommentService) { }
 
   ngOnInit() {
-    if (this.comment.Description !== '' || this.comment.Description == null) {
+    if (this.comment.Description !== '' || this.comment.Description != null) {
       console.log('copied');
       this.descriptionInput = this.comment.Description;
       this.gradeInput = this.comment.Grade;
-      console.log('date: ' + new Date(this.comment.CreateDate).getHours());
+      this.priceInput = this.price;
     }
     this.dateInput = this.comment.CreateDate;
     console.log('[debug] description: \'' + this.comment.Description + '\'');
@@ -68,6 +70,14 @@ export class CommentComponent implements OnInit {
             console.log('TODO, Feedback on failed comment:' + data.message);
           }
         }
-      )
+      );
+  }
+
+  gradeValid() {
+    if (this.gradeInput > 5 || this.gradeInput <= 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }

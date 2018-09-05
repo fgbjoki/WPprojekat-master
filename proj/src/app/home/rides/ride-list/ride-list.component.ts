@@ -24,14 +24,13 @@ export class RideListComponent implements OnInit, OnDestroy {
   result: any;
 
   ngOnInit() {
-    this.result = interval(6000)
+    this.result = interval(1000)
       .subscribe(
         (r) => {
           this.rideService.getRides()
             .subscribe(
               (data: any) => {
                 if (data.get === 'success') {
-                  // console.log('success array size: ' + data.rides.length);
                   if (data.rides.length >= 0) {
                     this.rides = [];
                   }
@@ -45,34 +44,16 @@ export class RideListComponent implements OnInit, OnDestroy {
                       data.rides[i].Status,
                       new LocationModel(data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng,
                         data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName,
-                        data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipcode), data.rides[i].UserID));
+                        data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipcode),
+                      new LocationModel(data.rides[i].EndLocation.Lat, data.rides[i].EndLocation.Lng,
+                        data.rides[i].EndLocation.StreetNumber, data.rides[i].EndLocation.StreetName,
+                        data.rides[i].EndLocation.CityName, data.rides[i].EndLocation.CityZipcode), data.rides[i].UserID));
                   }
                 } else {
                   this.rides = [];
                 }
               }
             );
-        }
-      );
-    this.rideService.getRides()
-      .subscribe(
-        (data: any) => {
-          if (data.get === 'success') {
-            if (data.rides.length > 0) {
-              this.rides = [];
-            }
-            for (let i = 0; i < data.rides.length; ++i) {
-              /* console.log('ride [' + i + ']: ' + JSON.stringify(data.rides[i]));*/
-              this.rides.push(new RideModel(data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID,
-                data.rides[i].AdminName, data.rides[i].Price,
-                data.rides[i].Comment, data.rides[i].Status,
-                new LocationModel(data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng,
-                  data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName,
-                  data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode), data.rides[i].UserID));
-            }
-          } else {
-            this.rides = [];
-          }
         }
       );
 

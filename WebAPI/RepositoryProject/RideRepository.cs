@@ -85,13 +85,16 @@ namespace RepositoryProject
                 return false;
         }
 
-        public bool SucceededRide(int rideID, int driverID)
+        public bool SucceededRide(int rideID, int driverID, Location endLocation, int price)
         {
             if (rides.Any(ride => ride.RideID == rideID))
             {
                 var tempRide = rides.First(ride => ride.RideID == rideID);
                 if (driverID == tempRide.DriverID)
                 {
+                    tempRide.EndLocation = new Location(endLocation.Lat, endLocation.Lng, endLocation.StreetNumber, endLocation.StreetName,
+                        endLocation.CityName, endLocation.CityZipcode);
+                    tempRide.Price = price;
                     tempRide.Status = RideStatus.succeeded;
 
                     return true;

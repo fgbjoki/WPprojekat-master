@@ -1160,7 +1160,7 @@ module.exports = "agm-map {\r\n  height: 300px;\r\n  width: 450px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<label>Current address: {{startAddress}}</label>\n<br/>\n<label>Wanted address: {{wantedAddress}}</label>\n<br/>\n<button type=\"submit\" class=\"btn btn-success\"\n        [disabled]=\"marker.lat === wantedMarker.lat && marker.lng === wantedMarker.lng\"\n        (click)=\"OnChangeAddress()\">Change Address</button>\n<agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n  <agm-marker\n    [latitude]=\"marker.lat\"\n    [longitude]=\"marker.lng\"\n    [label]=\"marker.label\"\n    id=\"gmApi1\"\n    *ngIf=\"marker.locationChoosen\"\n  ></agm-marker>\n  <agm-marker\n    [latitude]=\"wantedMarker.lat\"\n    [longitude]=\"wantedMarker.lng\"\n    [label]=\"wantedMarker.label\"\n    id=\"gmApi2\"\n    *ngIf=\"wantedMarker.locationChoosen\"\n  ></agm-marker>\n</agm-map>\nasdasd\n"
+module.exports = "<label>Current address: {{startAddress}}</label>\n<br/>\n<label>Wanted address: {{wantedAddress}}</label>\n<br/>\n<button type=\"submit\" class=\"btn btn-success\"\n        [disabled]=\"marker.lat === wantedMarker.lat && marker.lng === wantedMarker.lng\"\n        (click)=\"OnChangeAddress()\">Change Address</button>\n<agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n  <agm-marker\n    [latitude]=\"marker.lat\"\n    [longitude]=\"marker.lng\"\n    [label]=\"marker.label\"\n    id=\"gmApi1\"\n    *ngIf=\"marker.locationChoosen\"\n  ></agm-marker>\n  <agm-marker\n    [latitude]=\"wantedMarker.lat\"\n    [longitude]=\"wantedMarker.lng\"\n    [label]=\"wantedMarker.label\"\n    id=\"gmApi2\"\n    *ngIf=\"wantedMarker.locationChoosen\"\n  ></agm-marker>\n</agm-map>\n\n"
 
 /***/ }),
 
@@ -1516,7 +1516,7 @@ module.exports = "input.ng-invalid.ng-touched{\r\n  border: 1px solid red;\r\n}\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <h1 class=\"page-header\">Comment</h1>\n  <div class=\"row\">\n    <div class =\"col-md-3\">\n      <form (ngSubmit)=\"onSubmit()\" #f=\"ngForm\">\n        <div id=\"user-data\">\n          <div class=\"form-group\">\n            <label for=\"description\">Description</label>\n            <textarea\n              [disabled]=\"disabled\"\n              type=\"text\"\n              cols=\"180\"\n              rows=\"10\"\n              id=\"description\"\n              class=\"form-control\"\n              [(ngModel)] = \"descriptionInput\"\n              name=\"description\"\n              required\n              #description=\"ngModel\"></textarea>\n          </div>\n          <span class=\"help-block\" *ngIf=\"!description.valid && description.touched\">Please enter the Description</span>\n          <div class=\"form-group\" *ngIf=\"description.value === ''\">\n            <label for=\"date\">Date</label>\n            <input\n              disabled = \"true\"\n              type=\"text\"\n              id=\"date\"\n              class=\"form-control\"\n              name=\"date\"\n              required = \"true\"\n              [ngModel]=\"dateInput\"\n            >\n          </div>\n          <div class=\"form-group\">\n            <label for=\"grade\">Grade</label>\n            <input\n              [disabled]=\"disabled\"\n              type=\"number\"\n              id=\"grade\"\n              class=\"form-control\"\n              [(ngModel)] = \"gradeInput\"\n              min=\"1\"\n              max=\"5\"\n              value=\"1\"\n              name=\"grade\"\n              required\n              #grade=\"ngModel\">\n        </div>\n        <button\n          type=\"submit\"\n          class=\"btn btn-primary\"\n          [disabled]=\"!f.valid && (grade.value >= 0 && grade.value <=5) && disabled\"\n          [hidden]=\"disabled\">Comment</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <h1 class=\"page-header\">Comment</h1>\n  <div class=\"row\">\n    <div class =\"col-md-3\">\n      <form (ngSubmit)=\"onSubmit()\" #f=\"ngForm\">\n        <div id=\"user-data\">\n          <div class=\"form-group\">\n            <label for=\"description\">Description</label>\n            <textarea\n              [disabled]=\"disabled\"\n              type=\"text\"\n              cols=\"180\"\n              rows=\"10\"\n              id=\"description\"\n              class=\"form-control\"\n              [(ngModel)] = \"descriptionInput\"\n              name=\"description\"\n              required\n              #description=\"ngModel\"></textarea>\n          </div>\n          <span class=\"help-block\" *ngIf=\"!description.valid && description.touched\">Please enter the Description</span>\n          <div class=\"form-group\" *ngIf=\"description.value === ''\">\n            <label for=\"date\">Date</label>\n            <input\n              disabled = \"true\"\n              type=\"text\"\n              id=\"date\"\n              class=\"form-control\"\n              name=\"date\"\n              required = \"true\"\n              [ngModel]=\"dateInput\"\n            >\n          </div>\n          <div class=\"form-group\" *ngIf=\"rideStatus === 6\">\n            <label for=\"grade\">Grade</label>\n            <input\n              [disabled]=\"disabled\"\n              type=\"number\"\n              id=\"grade\"\n              class=\"form-control\"\n              [(ngModel)] = \"gradeInput\"\n              min=\"1\"\n              max=\"5\"\n              value=\"1\"\n              name=\"grade\"\n              required\n              #grade=\"ngModel\">\n        </div>\n        <button\n          type=\"submit\"\n          class=\"btn btn-primary\"\n          [disabled]=\"!f.valid || !gradeValid()\"\n          [hidden]=\"disabled\">Comment</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -1558,11 +1558,11 @@ var CommentComponent = /** @class */ (function () {
         this.disabled = true;
     }
     CommentComponent.prototype.ngOnInit = function () {
-        if (this.comment.Description !== '' || this.comment.Description == null) {
+        if (this.comment.Description !== '' || this.comment.Description != null) {
             console.log('copied');
             this.descriptionInput = this.comment.Description;
             this.gradeInput = this.comment.Grade;
-            console.log('date: ' + new Date(this.comment.CreateDate).getHours());
+            this.priceInput = this.price;
         }
         this.dateInput = this.comment.CreateDate;
         console.log('[debug] description: \'' + this.comment.Description + '\'');
@@ -1598,6 +1598,14 @@ var CommentComponent = /** @class */ (function () {
             }
         });
     };
+    CommentComponent.prototype.gradeValid = function () {
+        if (this.gradeInput > 5 || this.gradeInput <= 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
         __metadata("design:type", _models_comment_model__WEBPACK_IMPORTED_MODULE_1__["CommentModel"])
@@ -1610,6 +1618,10 @@ var CommentComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
         __metadata("design:type", Number)
     ], CommentComponent.prototype, "rideID", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", Number)
+    ], CommentComponent.prototype, "price", void 0);
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])('f'),
         __metadata("design:type", _angular_forms__WEBPACK_IMPORTED_MODULE_3__["NgForm"])
@@ -1698,7 +1710,7 @@ module.exports = "agm-map {\r\n  height: 100px;\r\n}\r\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>{{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('success')\">Successful</a></li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    {{ rideStatus }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus >= 4\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"></app-comment>\n  </div>\n</div>\n\n<!-- Admin part -->\n<div class=\"row\" *ngIf=\"ride.rideStatus === 0 && myGlobals.myUser.accessLevel === 3\">\n  <div class=\"col-xs-6\">\n    <div class=\"form-group\">\n      <label for=\"driver\">Drivers</label> &nbsp;\n      <select\n        id=\"driver\"\n        #driver>\n        <option\n          *ngFor=\"let d of drivers\" [ngValue]=\"d\">{{d.Username}}</option>\n      </select> &nbsp;\n      <button type=\"button\" class=\"btn btn-success\" [disabled]=\"driver.selectedIndex < 0\" (click)=\"hireTheSelectedDriver()\">Hire</button>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n\n  </div>\n</div>\n<div class=\"row\" [hidden]=\"isHidden()\">\n  <button type=\"button\" class=\"btn btn-warning\"><a [routerLink]=\"'edit'\">Modify</a></button>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <h1>Start: {{ride.startLocation.streetName}} {{ride.startLocation.streetNumber}}</h1> <br/>\n    <h1 *ngIf=\"ride.rideStatus === 6\">End: {{ride.endLocation.streetName}} {{ ride.endLocation.streetNumber}}</h1>\n  </div>\n</div>\n<div class=\"row\" *ngIf=\"ride.rideStatus !== 6\">\n  <div class=\"col-xs-12\">\n    <div class=\"btn-group\" appDropdown>\n      <button type=\"button\"\n              class=\"btn btn-primary dropdown-toggle\"\n              style=\"cursor:pointer\">\n        Manage Ride <span class=\"caret\"></span>\n      </button>\n      <ul class=\"dropdown-menu\">\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('accept')\">Accept</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 1 && (ride.rideStatus === 0  || ride.rideStatus === 1)\" (click)=\"OnClick('cancel')\">Cancel</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" (click)=\"OnClick('failed')\">Failed</a></li>\n        <li><a style=\"cursor:pointer\" *ngIf=\"myGlobals.myUser.accessLevel === 2 && (ride.rideStatus === 3 || ride.rideStatus === 2)\" [routerLink]=\"'edit'\">Success</a> </li>\n      </ul>\n    </div>\n  </div>\n</div>\n<div class=\"row\">\n  <div class=\"col-xs-12\">\n    Status: {{ rideStatus }}\n  </div>\n</div>\n<div class=\"row\" *ngIf=\"ride.rideStatus === 6\">\n  <div class=\"col-xs-12\">\n    Price: {{ ride.price }}\n  </div>\n</div>\n\n<div class=\"row\" *ngIf=\"ride.rideStatus >= 4\">\n  <div class=\"col-xs-12\">\n    <app-comment\n    [comment]=\"ride.comment\"\n    [rideStatus]=\"ride.rideStatus\"\n    [rideID]=\"ride.rideID\"\n    [price]=\"ride.price\"></app-comment>\n  </div>\n</div>\n\n<!-- Admin part -->\n<div class=\"row\" *ngIf=\"ride.rideStatus === 0 && myGlobals.myUser.accessLevel === 3\">\n  <div class=\"col-xs-6\">\n    <div class=\"form-group\">\n      <label for=\"driver\">Drivers</label> &nbsp;\n      <select\n        id=\"driver\"\n        #driver>\n        <option\n          *ngFor=\"let d of drivers\" [ngValue]=\"d\">{{d.Username}}</option>\n      </select> &nbsp;\n      <button type=\"button\" class=\"btn btn-success\" [disabled]=\"driver.selectedIndex < 0\" (click)=\"hireTheSelectedDriver()\">Hire</button>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1759,6 +1771,9 @@ var RideDetailsComponent = /** @class */ (function () {
                 returnValue = false;
             }
         }
+        console.log('access: ' + this.myGlobals.myUser.accessLevel);
+        console.log('ridestatus: ' + this.ride.rideStatus);
+        console.log('returnValue: ' + returnValue);
         return returnValue;
     };
     RideDetailsComponent.prototype.ngOnInit = function () {
@@ -1793,6 +1808,8 @@ var RideDetailsComponent = /** @class */ (function () {
                     break;
             }
         });
+        console.log('id: ' + this.id);
+        console.log('ride: ' + JSON.stringify(this.ride));
         if (this.myGlobals.myUser.accessLevel === 3) {
             this.result = Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["interval"])(6000)
                 .subscribe(function (r) {
@@ -1845,7 +1862,6 @@ var RideDetailsComponent = /** @class */ (function () {
                 }
             }
             if (exists === false && (this.ride.carType === data.drivers[i].Vehicle.VehicleType || this.ride.carType === _models_car_types__WEBPACK_IMPORTED_MODULE_4__["CarType"].not_defined)) {
-                console.log('added + ' + data.drivers[i].Username);
                 this.drivers.push(new _admin_ride_making_driver_model__WEBPACK_IMPORTED_MODULE_6__["DriverModel"](data.drivers[i].ID, data.drivers[i].Username, data.drivers[i].Vehicle.VehicleType, data.drivers[i].Location));
             }
         }
@@ -1855,7 +1871,6 @@ var RideDetailsComponent = /** @class */ (function () {
         if (toExecute === 'cancel') {
             this.rideService.cancelRide(this.ride.rideID)
                 .subscribe(function (data) {
-                console.log('data: ' + data);
                 if (data.cancel === 'success') {
                     _this.router.navigateByUrl('');
                     console.log('[TODO] Feedback, successfully canceled ride');
@@ -1872,7 +1887,7 @@ var RideDetailsComponent = /** @class */ (function () {
             this.failedRide();
         }
         else if (toExecute === 'success') {
-            this.successRide();
+            this.router.navigateByUrl('edit');
         }
     };
     RideDetailsComponent.prototype.acceptRide = function () {
@@ -1898,19 +1913,6 @@ var RideDetailsComponent = /** @class */ (function () {
             }
             else {
                 console.log('[TODO] Feedback, ride couldn\'t be failed: ' + data.message);
-            }
-        });
-    };
-    RideDetailsComponent.prototype.successRide = function () {
-        var _this = this;
-        this.rideService.succeededRide(this.ride.rideID)
-            .subscribe(function (data) {
-            if (data.succeeded === 'success') {
-                _this.router.navigateByUrl('');
-                console.log('[TODO] Feedback, succeeded ride');
-            }
-            else {
-                console.log('[TODO] Feedback, succeeded error: ' + data.message);
             }
         });
     };
@@ -1986,7 +1988,7 @@ module.exports = "agm-map {\n  height: 250px;\n  width: 300px;\n}\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <form (ngSubmit)=\"onSubmit()\">\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <button type=\"submit\" class=\"btn btn-success\">Save</button>\n          <button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 50px\" routerLink=\"/\">Cancel</button>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel !== 3\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label>{{startAddress}}</label>\n            <agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n              <agm-marker\n                [latitude]=\"marker.lat\"\n                [longitude]=\"marker.lng\"\n                [label]=\"marker.label\"\n                id=\"gmApi\"\n                *ngIf=\"marker.locationChoosen\"\n                ></agm-marker>\n            </agm-map>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"status\">Status</label>\n            <input\n              id=\"status\"\n              [disabled]=\"selectedRideStatus !== 'Create'\"\n              [value]=\"selectedRideStatus == undefined ? 'Create' : selectedRideStatus\">\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"carType\">Vehicle type</label>\n            <select\n              id=\"carType\"\n              [disabled]=\"editMode\"\n              #CARTYPE>\n              <option *ngFor=\"let vehicle of vehicleType\"\n                [value]=\"vehicle\"\n                >{{vehicle}}</option>\n            </select>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <form (ngSubmit)=\"onSubmit()\">\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <button type=\"submit\" class=\"btn btn-success\" *ngIf=\"myGlobal.myUser.accessLevel === 1\">Save</button>\n          <button type=\"button\" class=\"btn btn-success\" *ngIf=\"myGlobal.myUser.accessLevel === 2\" (click)=\"OnFinish()\">Finish</button>\n          <button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 50px\" routerLink=\"/\">Cancel</button>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel !== 3\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label>Start: {{startAddress}}</label>\n            <label *ngIf=\"ride.rideStatus === 2 || ride.rideStatus === 3\">End: {{endAddress}}</label>\n            <agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n              <agm-marker\n                [latitude]=\"marker.lat\"\n                [longitude]=\"marker.lng\"\n                [label]=\"marker.label\"\n                id=\"gmApi\"\n                *ngIf=\"marker.locationChoosen\"\n                ></agm-marker>\n              <agm-marker\n                [latitude]=\"endMarker.lat\"\n                [longitude]=\"endMarker.lng\"\n                [label]=\"endMarker.label\"\n                id=\"gmApi1\"\n                *ngIf=\"endMarker.locationChoosen\"\n              ></agm-marker>\n            </agm-map>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel === 1\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"carType\">Vehicle type</label>\n            <select\n              id=\"carType\"\n              [disabled]=\"editMode\"\n              #CARTYPE>\n              <option *ngFor=\"let vehicle of vehicleType\"\n                [value]=\"vehicle\"\n                >{{vehicle}}</option>\n            </select>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-group\" *ngIf=\"ride.rideStatus === 3\">\n        <label for=\"price\">Price</label>\n        <input\n          [disabled]=\"myGlobal.myUser.accessLevel !== 2\"\n          type=\"number\"\n          id=\"price\"\n          class=\"form-control\"\n          [(ngModel)] = \"ride.price\"\n          min=\"1\"\n          max=\"5\"\n          value=\"1\"\n          name=\"price\"\n          required\n          #price=\"ngModel\">\n      </div>\n    </form>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -2026,26 +2028,18 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var RideEditComponent = /** @class */ (function () {
-    function RideEditComponent(route, rideService, mapService, myGlobal) {
+    function RideEditComponent(route, rideService, mapService, myGlobal, router) {
         this.route = route;
         this.rideService = rideService;
         this.mapService = mapService;
         this.myGlobal = myGlobal;
+        this.router = router;
         this.editMode = false;
         this.drivers = [];
         this.vehicleType = [
             'Not defined',
             'Car',
             'Van'
-        ];
-        this.rideStatus = [
-            'Created - On waiting',
-            'Formed',
-            'Processed',
-            'Accepted',
-            'Called off',
-            'Failed',
-            'Succeeded'
         ];
         this.marker = new /** @class */ (function () {
             function class_1() {
@@ -2056,6 +2050,15 @@ var RideEditComponent = /** @class */ (function () {
         this.marker.lng = 19.833549;
         this.marker.label = 'A';
         this.marker.locationChoosen = false;
+        this.endMarker = new /** @class */ (function () {
+            function class_2() {
+            }
+            return class_2;
+        }());
+        this.endMarker.lat = 45.267136;
+        this.endMarker.lng = 19.833549;
+        this.endMarker.label = 'B';
+        this.endMarker.locationChoosen = false;
     }
     RideEditComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2065,14 +2068,32 @@ var RideEditComponent = /** @class */ (function () {
             _this.editMode = params['id'] != null;
             _this.initForm();
         });
-        if (this.editMode) {
+        if (this.editMode && this.myGlobal.myUser.accessLevel === 1) {
             this.startAddress = this.ride.startLocation.streetName;
-            if (this.ride.startLocation.streetNumber != undefined)
+            if (this.ride.startLocation.streetNumber != null)
                 this.startAddress += ' ' + this.ride.startLocation.streetNumber;
             if (this.ride.startLocation.cityName !== '')
                 this.startAddress += ', ' + this.ride.startLocation.cityName;
             if (this.ride.startLocation.cityZipcode !== '')
-                this.startAddress += ' ' + this.ride.startLocation.cityZipcode.toString();
+                this.startAddress += ' ' + this.ride.startLocation.cityZipcode;
+        }
+        else if (this.editMode && this.myGlobal.myUser.accessLevel === 2) {
+            this.startAddress = this.ride.startLocation.streetName;
+            if (this.ride.startLocation.streetNumber != null)
+                this.startAddress += ' ' + this.ride.startLocation.streetNumber;
+            if (this.ride.startLocation.cityName !== '' || this.ride.startLocation.cityName != null)
+                this.startAddress += ', ' + this.ride.startLocation.cityName;
+            if (this.ride.startLocation.cityZipcode !== '' || this.ride.startLocation.cityName != null)
+                this.startAddress += ' ' + this.ride.startLocation.cityZipcode;
+            if (this.ride.endLocation.streetName !== '' || this.ride.endLocation.streetName != null) {
+                this.endAddress = this.ride.endLocation.streetName;
+                if (this.ride.endLocation.streetNumber != null)
+                    this.endAddress += ' ' + this.ride.endLocation.streetNumber;
+                if (this.ride.endLocation.cityName !== '')
+                    this.endAddress += ', ' + this.ride.endLocation.cityName;
+                if (this.ride.endLocation.cityZipcode !== '')
+                    this.endAddress += ' ' + this.ride.endLocation.cityZipcode;
+            }
         }
     };
     RideEditComponent.prototype.onSubmit = function () {
@@ -2110,7 +2131,7 @@ var RideEditComponent = /** @class */ (function () {
         }
         country = split[3];
         if (this.editMode === false) {
-            this.rideService.createRide(new _models_location_model__WEBPACK_IMPORTED_MODULE_5__["LocationModel"](this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode.toString()), carType)
+            this.rideService.createRide(new _models_location_model__WEBPACK_IMPORTED_MODULE_5__["LocationModel"](this.marker.lat, this.marker.lng, streetNumber, streetName, city, zipcode), carType)
                 .subscribe(function (data) {
                 //console.log(data);
             });
@@ -2129,14 +2150,62 @@ var RideEditComponent = /** @class */ (function () {
     };
     RideEditComponent.prototype.onClickMap = function (event) {
         var _this = this;
-        this.marker.lat = event.coords.lat;
-        this.marker.lng = event.coords.lng;
-        this.marker.locationChoosen = true;
-        var latlng = new google.maps.LatLng(this.marker.lat, this.marker.lng);
-        this.mapService.geocode(latlng)
+        if (this.myGlobal.myUser.accessLevel === 1) {
+            this.marker.lat = event.coords.lat;
+            this.marker.lng = event.coords.lng;
+            this.marker.locationChoosen = true;
+            var latlng = new google.maps.LatLng(this.marker.lat, this.marker.lng);
+            this.mapService.geocode(latlng)
+                .subscribe(function (data) {
+                _this.startAddress = data[0].formatted_address;
+            });
+        }
+        else if (this.myGlobal.myUser.accessLevel === 2) {
+            this.endMarker.lat = event.coords.lat;
+            this.endMarker.lng = event.coords.lng;
+            this.endMarker.locationChoosen = true;
+            var latlng = new google.maps.LatLng(this.endMarker.lat, this.endMarker.lng);
+            this.mapService.geocode(latlng)
+                .subscribe(function (data) {
+                _this.endAddress = data[0].formatted_address;
+            });
+        }
+    };
+    RideEditComponent.prototype.OnFinish = function () {
+        var _this = this;
+        console.log('price ' + this.ride.price);
+        var split = this.endAddress.split(',');
+        var tempValue = split[0].split(' ');
+        var streetName = '';
+        var streetNumber;
+        var city = '';
+        var zipcode = '';
+        var country;
+        var i = 0;
+        for (; i < tempValue.length; ++i) {
+            if (tempValue[i].match(/^[0-9]+$/) == null) {
+                streetName += tempValue[i] + ' ';
+            }
+            else {
+                streetNumber = parseInt(tempValue[i], 10);
+            }
+        }
+        for (tempValue = split[1].split(' '), i = 0; i < tempValue.length; ++i) {
+            if (tempValue[i].match(/^[0-9]+$/) == null) {
+                city += tempValue[i] + ' ';
+            }
+            else
+                zipcode = tempValue[i];
+        }
+        this.rideService.succeededRide(this.ride.rideID, new _models_location_model__WEBPACK_IMPORTED_MODULE_5__["LocationModel"](this.endMarker.lat, this.endMarker.lng, streetNumber, streetName, city, zipcode), this.ride.price)
             .subscribe(function (data) {
-            console.log(data[0].formatted_address);
-            _this.startAddress = data[0].formatted_address;
+            if (data.succeeded === 'success') {
+                _this.router.navigateByUrl('');
+                console.log('[TODO] Feedback, succeeded ride');
+            }
+            else {
+                console.log('[TODO] Feedback, succeeded error: ' + data.message);
+            }
         });
     };
     RideEditComponent.prototype.initForm = function () {
@@ -2182,7 +2251,8 @@ var RideEditComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
             _ride_service__WEBPACK_IMPORTED_MODULE_2__["RideService"],
             _map_service__WEBPACK_IMPORTED_MODULE_4__["MapService"],
-            _global__WEBPACK_IMPORTED_MODULE_6__["Globals"]])
+            _global__WEBPACK_IMPORTED_MODULE_6__["Globals"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_1__["Router"]])
     ], RideEditComponent);
     return RideEditComponent;
 }());
@@ -2243,7 +2313,6 @@ var RideItemComponent = /** @class */ (function () {
         this.rideStatus = '';
     }
     RideItemComponent.prototype.ngOnInit = function () {
-        // console.log('[debug ride-item]: ' + this.ride.startLocation.streetNumber + ' with index: ' + this.index);
         switch (this.ride.rideStatus) {
             case _models_ride_status__WEBPACK_IMPORTED_MODULE_2__["RideStatus"].created:
                 this.rideStatus = 'Created';
@@ -2367,8 +2436,7 @@ var RideListComponent = /** @class */ (function () {
                         _this.rides = [];
                     }
                     for (var i = 0; i < data.rides.length; ++i) {
-                        console.log('ride[' + i + ']: status: ' + data.rides[i].Status);
-                        _this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_1__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, new _models_comment_model__WEBPACK_IMPORTED_MODULE_7__["CommentModel"](data.rides[i].Comment.Description, data.rides[i].Comment.CreateDate, data.rides[i].Comment.ClientID, data.rides[i].Comment.RideID, data.rides[i].Comment.DriveID, data.rides[i].Comment.Grade), data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipcode), data.rides[i].UserID));
+                        _this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_1__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, new _models_comment_model__WEBPACK_IMPORTED_MODULE_7__["CommentModel"](data.rides[i].Comment.Description, data.rides[i].Comment.CreateDate, data.rides[i].Comment.ClientID, data.rides[i].Comment.RideID, data.rides[i].Comment.DriveID, data.rides[i].Comment.Grade), data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipcode), new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].EndLocation.Lat, data.rides[i].EndLocation.Lng, data.rides[i].EndLocation.StreetNumber, data.rides[i].EndLocation.StreetName, data.rides[i].EndLocation.CityName, data.rides[i].EndLocation.CityZipcode), data.rides[i].UserID));
                     }
                 }
                 else {
@@ -2379,19 +2447,17 @@ var RideListComponent = /** @class */ (function () {
         this.rideService.getRides()
             .subscribe(function (data) {
             if (data.get === 'success') {
-                // console.log('success array size: ' + data.rides.length);
                 if (data.rides.length > 0) {
                     _this.rides = [];
                 }
                 for (var i = 0; i < data.rides.length; ++i) {
                     /* console.log('ride [' + i + ']: ' + JSON.stringify(data.rides[i]));*/
-                    _this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_1__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, data.rides[i].Comment, data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode), data.rides[i].UserID));
+                    _this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_1__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, data.rides[i].Comment, data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode), new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].EndLocation.Lat, data.rides[i].EndLocation.Lng, data.rides[i].EndLocation.StreetNumber, data.rides[i].EndLocation.StreetName, data.rides[i].EndLocation.CityName, data.rides[i].EndLocation.CityZipcode), data.rides[i].UserID));
                 }
             }
             else {
                 _this.rides = [];
             }
-            /* console.log('array filled: ' + JSON.stringify(this.rides));*/
         });
     };
     RideListComponent.prototype.ngOnDestroy = function () {
@@ -2531,6 +2597,16 @@ var RideService = /** @class */ (function () {
             return data;
         }));
     };
+    RideService.prototype.getAllRides = function () {
+        var _this = this;
+        return this.http
+            .get('http://localhost:51383/api/allRides')
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (response) {
+            var data = response.json();
+            _this.populateRides(data);
+            return data;
+        }));
+    };
     RideService.prototype.cancelRide = function (rideID) {
         var head = new _angular_http__WEBPACK_IMPORTED_MODULE_2__["Headers"]({ 'Content-Type': 'application/json' });
         return this.http.post('http://localhost:51383/api/ride/cancelride', JSON.stringify(rideID), { headers: head })
@@ -2555,9 +2631,14 @@ var RideService = /** @class */ (function () {
             return data;
         }));
     };
-    RideService.prototype.succeededRide = function (rideID) {
+    RideService.prototype.succeededRide = function (rideID, location, price) {
         var head = new _angular_http__WEBPACK_IMPORTED_MODULE_2__["Headers"]({ 'Content-Type': 'application/json' });
-        return this.http.post('http://localhost:51383/api/ride/successride', JSON.stringify(rideID), { headers: head })
+        console.log(JSON.stringify(location));
+        return this.http.post('http://localhost:51383/api/ride/successride', {
+            rideID: rideID,
+            Location: location,
+            Price: price
+        }, { headers: head })
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (response) {
             var data = response.json();
             return data;
@@ -2577,19 +2658,14 @@ var RideService = /** @class */ (function () {
     RideService.prototype.populateRides = function (data) {
         for (var i = 0; i < data.rides.length; ++i) {
             this.rides = [];
-            this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_0__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, new _models_comment_model__WEBPACK_IMPORTED_MODULE_6__["CommentModel"](data.rides[i].Comment.Description, data.rides[i].Comment.CreateDate, data.rides[i].Comment.ClientID, data.rides[i].Comment.RideID, data.rides[i].Comment.DriveID, data.rides[i].Comment.Grade), data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode), data.rides[i].UserID));
+            this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_0__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, new _models_comment_model__WEBPACK_IMPORTED_MODULE_6__["CommentModel"](data.rides[i].Comment.Description, data.rides[i].Comment.CreateDate, data.rides[i].Comment.ClientID, data.rides[i].Comment.RideID, data.rides[i].Comment.DriveID, data.rides[i].Comment.Grade), data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode), new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].EndLocation.Lat, data.rides[i].EndLocation.Lng, data.rides[i].EndLocation.StreetNumber, data.rides[i].EndLocation.StreetName, data.rides[i].EndLocation.CityName, data.rides[i].EndLocation.CityZipCode), data.rides[i].UserID));
         }
     };
     RideService.prototype.getRide = function (index) {
-        console.log('getRide index: ' + index);
-        for (var i = 0; i < this.rides.length; ++i) {
-            console.log('getRide requested: ' + this.rides[i].startLocation.streetName);
-        }
         return this.rides[index];
     };
     RideService.prototype.createRide = function (location, carType) {
         var head = new _angular_http__WEBPACK_IMPORTED_MODULE_2__["Headers"]({ 'Content-Type': 'application/json' });
-        console.log('[debug] sending JSON for adding a ride:' + JSON.stringify({ Location: location, CarType: carType }));
         return this.http.post('http://localhost:51383/api/ride/usercreated', JSON.stringify({ Location: location, CarType: carType }), { headers: head });
     };
     RideService = __decorate([
@@ -2788,7 +2864,7 @@ var LocationModel = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RideModel", function() { return RideModel; });
 var RideModel = /** @class */ (function () {
-    function RideModel(carType, rideID, timeMade, driverID, adminName, price, comment, rideStatus, startAddress, userID) {
+    function RideModel(carType, rideID, timeMade, driverID, adminName, price, comment, rideStatus, startAddress, endLocation, userID) {
         this.rideID = rideID;
         this.timeMade = new Date(timeMade);
         this.carType = carType;
@@ -2798,6 +2874,7 @@ var RideModel = /** @class */ (function () {
         this.comment = comment;
         this.rideStatus = rideStatus;
         this.startLocation = startAddress;
+        this.endLocation = endLocation;
         this.userID = userID;
     }
     return RideModel;

@@ -91,10 +91,15 @@ export class RideService {
       );
   }
 
-  public succeededRide(rideID: number) {
+  public succeededRide(rideID: number, location: LocationModel, price: number) {
     const head = new Headers({ 'Content-Type': 'application/json' });
+    console.log(JSON.stringify(location));
     return this.http.post('http://localhost:51383/api/ride/successride',
-      JSON.stringify(rideID), {headers: head})
+      {
+        rideID : rideID,
+        Location: location,
+        Price: price
+      }, {headers: head})
       .pipe(
         map(
           (response: Response) => {
@@ -134,22 +139,19 @@ export class RideService {
         data.rides[i].Status,
         new LocationModel(data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng,
           data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName,
-          data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode), data.rides[i].UserID));
+          data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode),
+        new LocationModel(data.rides[i].EndLocation.Lat, data.rides[i].EndLocation.Lng,
+          data.rides[i].EndLocation.StreetNumber, data.rides[i].EndLocation.StreetName,
+          data.rides[i].EndLocation.CityName, data.rides[i].EndLocation.CityZipCode), data.rides[i].UserID));
     }
   }
 
   getRide(index: number) {
-    console.log('getRide index: ' + index);
-    for (let i = 0; i < this.rides.length; ++i) {
-      console.log('getRide requested: ' + this.rides[i].startLocation.streetName);
-    }
-
     return this.rides[index];
   }
 
   createRide(location: LocationModel, carType: CarType) {
     const head = new Headers({ 'Content-Type': 'application/json' });
-    console.log('[debug] sending JSON for adding a ride:' + JSON.stringify({Location: location, CarType: carType}));
     return this.http.post('http://localhost:51383/api/ride/usercreated',
       JSON.stringify({Location: location, CarType: carType}), {headers: head });
   }
