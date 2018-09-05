@@ -24,7 +24,7 @@ namespace MyWebAPI.Controllers
         /// </summary>
         public static Dictionary<string, User> loggedIn = new Dictionary<string, User>();
 
-        public string GenerateToken(string username, string password)
+        public static string GenerateToken(string username, string password)
         {
             StringBuilder Sb = new StringBuilder();
 
@@ -37,6 +37,17 @@ namespace MyWebAPI.Controllers
                     Sb.Append(b.ToString("x2"));
             }
             return Sb.ToString();
+        }
+
+        public static bool CheckCookie(string cookieValue)
+        {
+            var users = UserRepository.Instance.GetAllUsers().ToList();
+            foreach (var user in users)
+            {
+                if (GenerateToken(user.Username, user.Password).Equals(cookieValue))
+                    return true;
+            }
+            return false;
         }
 
         // GET: api/User
@@ -100,16 +111,26 @@ namespace MyWebAPI.Controllers
             }
             else
             {
-                var json = new JavaScriptSerializer().Serialize(UserRepository.Instance.GetUserByUsername(param.Username));
+                if (UserRepository.Instance.CheckIfValidParams(param.Username, param.Password))
+                {
+                    var json = new JavaScriptSerializer().Serialize(UserRepository.Instance.GetUserByUsername(param.Username));
 
-                var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"login\":\"success\", \"message\":\"Successfuly logged in\", \"user\":"+json+"}", System.Text.Encoding.UTF8, "application/json") };
-                var setCookie = new CookieHeaderValue("myCookie", GenerateToken(param.Username, param.Password)) { Expires = DateTimeOffset.Now.AddDays(1) };
-                setCookie.Domain = Request.RequestUri.Host;
-                setCookie.Path = "/";
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"login\":\"success\", \"message\":\"Successfuly logged in\", \"user\":" + json + "}", System.Text.Encoding.UTF8, "application/json") };
+                    var setCookie = new CookieHeaderValue("myCookie", GenerateToken(param.Username, param.Password)) { Expires = DateTimeOffset.Now.AddDays(1) };
+                    setCookie.Domain = Request.RequestUri.Host;
+                    setCookie.Path = "/";
 
-                loggedIn.Add(GenerateToken(param.Username, param.Password), UserRepository.Instance.GetUserByUsername(param.Username));
-                responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
-                return responseMessage;
+                    loggedIn.Add(GenerateToken(param.Username, param.Password), UserRepository.Instance.GetUserByUsername(param.Username));
+                    responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                    return responseMessage;
+                }
+                else
+                {
+                    var responseMessage = new HttpResponseMessage() { Content = new StringContent("{\"login\":\"failed\", \"message\":\"Username or password was incorrect\"}", System.Text.Encoding.UTF8, "application/json") };
+                    var setCookie = new CookieHeaderValue("myCookie", "") { Expires = DateTimeOffset.Now.AddDays(-1) };
+                    responseMessage.Headers.AddCookies(new CookieHeaderValue[] { setCookie });
+                    return responseMessage;
+                }
             }
         }
 
