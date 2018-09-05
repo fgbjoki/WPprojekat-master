@@ -41,9 +41,6 @@ export class RideDetailsComponent implements OnInit {
         returnValue = false;
       }
     }
-    console.log('access: ' + this.myGlobals.myUser.accessLevel);
-    console.log('ridestatus: ' + this.ride.rideStatus);
-    console.log('returnValue: ' + returnValue);
     return returnValue;
   }
 
@@ -54,7 +51,6 @@ export class RideDetailsComponent implements OnInit {
           this.id = +params['id'];
           this.ride = this.rideService.getRide(this.id);
           this.rideStatus = '';
-           console.log('selected ride status: ' + this.ride.rideStatus);
           switch (this.ride.rideStatus) {
             case RideStatus.created:
               this.rideStatus = 'Created';

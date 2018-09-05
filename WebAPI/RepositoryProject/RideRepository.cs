@@ -173,6 +173,7 @@ namespace RepositoryProject
 
                 tempDriver.CurrentRideID = rideID;
                 rides.First(ride => ride.RideID == rideID).DriverID = driverID;
+                rides.First(ride => ride.RideID == rideID).Status = RideStatus.processed;
                 return true;
             }
             else

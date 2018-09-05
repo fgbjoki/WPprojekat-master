@@ -1516,7 +1516,7 @@ module.exports = "input.ng-invalid.ng-touched{\r\n  border: 1px solid red;\r\n}\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n  <h1 class=\"page-header\">Comment</h1>\n  <div class=\"row\">\n    <div class =\"col-md-3\">\n      <form (ngSubmit)=\"onSubmit()\" #f=\"ngForm\">\n        <div id=\"user-data\">\n          <div class=\"form-group\">\n            <label for=\"description\">Description</label>\n            <textarea\n              [disabled]=\"disabled\"\n              type=\"text\"\n              cols=\"180\"\n              rows=\"10\"\n              id=\"description\"\n              class=\"form-control\"\n              [(ngModel)] = \"descriptionInput\"\n              name=\"description\"\n              required\n              #description=\"ngModel\"></textarea>\n          </div>\n          <span class=\"help-block\" *ngIf=\"!description.valid && description.touched\">Please enter the Description</span>\n          <div class=\"form-group\" *ngIf=\"description.value === ''\">\n            <label for=\"date\">Date</label>\n            <input\n              disabled = \"true\"\n              type=\"text\"\n              id=\"date\"\n              class=\"form-control\"\n              name=\"date\"\n              required = \"true\"\n              [ngModel]=\"dateInput\"\n            >\n          </div>\n          <div class=\"form-group\" *ngIf=\"rideStatus === 6\">\n            <label for=\"grade\">Grade</label>\n            <input\n              [disabled]=\"disabled\"\n              type=\"number\"\n              id=\"grade\"\n              class=\"form-control\"\n              [(ngModel)] = \"gradeInput\"\n              min=\"1\"\n              max=\"5\"\n              value=\"1\"\n              name=\"grade\"\n              required\n              #grade=\"ngModel\">\n        </div>\n        <button\n          type=\"submit\"\n          class=\"btn btn-primary\"\n          [disabled]=\"!f.valid || !gradeValid()\"\n          [hidden]=\"disabled\">Comment</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n\n"
+module.exports = "<div class=\"container\">\n  <h1 class=\"page-header\">Comment</h1>\n  <div class=\"row\">\n    <div class =\"col-md-3\">\n      <form (ngSubmit)=\"onSubmit()\" #f=\"ngForm\">\n        <div id=\"user-data\">\n          <div class=\"form-group\">\n            <label for=\"description\">Description</label>\n            <textarea\n              [disabled]=\"disabled\"\n              type=\"text\"\n              cols=\"180\"\n              rows=\"10\"\n              id=\"description\"\n              class=\"form-control\"\n              [(ngModel)] = \"descriptionInput\"\n              name=\"description\"\n              required\n              #description=\"ngModel\"></textarea>\n          </div>\n          <span class=\"help-block\" *ngIf=\"!description.valid && description.touched\">Please enter the Description</span>\n          <div class=\"form-group\" *ngIf=\"description.value === ''\">\n            <label for=\"date\">Date</label>\n            <input\n              disabled = \"true\"\n              type=\"text\"\n              id=\"date\"\n              class=\"form-control\"\n              name=\"date\"\n              required = \"true\"\n              [ngModel]=\"dateInput\"\n            >\n          </div>\n          <div class=\"form-group\" *ngIf=\"rideStatus === 6\">\n            <label for=\"grade\">Grade</label>\n            <input\n              [disabled]=\"disabled\"\n              type=\"number\"\n              id=\"grade\"\n              class=\"form-control\"\n              [(ngModel)] = \"gradeInput\"\n              min=\"1\"\n              max=\"5\"\n              value=\"1\"\n              name=\"grade\"\n              #grade=\"ngModel\">\n        </div>\n        <button\n          type=\"submit\"\n          class=\"btn btn-primary\"\n          [disabled]=\"!f.valid || !gradeValid()\"\n          [hidden]=\"disabled\">Comment</button>\n        </div>\n      </form>\n    </div>\n  </div>\n</div>\n\n"
 
 /***/ }),
 
@@ -1599,7 +1599,10 @@ var CommentComponent = /** @class */ (function () {
         });
     };
     CommentComponent.prototype.gradeValid = function () {
-        if (this.gradeInput > 5 || this.gradeInput <= 0) {
+        if (this.myGlobals.myUser.accessLevel === 2) {
+            return true;
+        }
+        else if (this.gradeInput > 5 || this.gradeInput <= 0) {
             return false;
         }
         else {
@@ -1771,9 +1774,6 @@ var RideDetailsComponent = /** @class */ (function () {
                 returnValue = false;
             }
         }
-        console.log('access: ' + this.myGlobals.myUser.accessLevel);
-        console.log('ridestatus: ' + this.ride.rideStatus);
-        console.log('returnValue: ' + returnValue);
         return returnValue;
     };
     RideDetailsComponent.prototype.ngOnInit = function () {
@@ -1783,7 +1783,6 @@ var RideDetailsComponent = /** @class */ (function () {
             _this.id = +params['id'];
             _this.ride = _this.rideService.getRide(_this.id);
             _this.rideStatus = '';
-            console.log('selected ride status: ' + _this.ride.rideStatus);
             switch (_this.ride.rideStatus) {
                 case _models_ride_status__WEBPACK_IMPORTED_MODULE_3__["RideStatus"].created:
                     _this.rideStatus = 'Created';
@@ -1808,10 +1807,8 @@ var RideDetailsComponent = /** @class */ (function () {
                     break;
             }
         });
-        console.log('id: ' + this.id);
-        console.log('ride: ' + JSON.stringify(this.ride));
         if (this.myGlobals.myUser.accessLevel === 3) {
-            this.result = Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["interval"])(6000)
+            this.result = Object(rxjs__WEBPACK_IMPORTED_MODULE_7__["interval"])(1000)
                 .subscribe(function (r) {
                 _this.driverService.getDrivers()
                     .subscribe(function (data) {
@@ -1988,7 +1985,7 @@ module.exports = "agm-map {\n  height: 250px;\n  width: 300px;\n}\n"
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <form (ngSubmit)=\"onSubmit()\">\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <button type=\"submit\" class=\"btn btn-success\" *ngIf=\"myGlobal.myUser.accessLevel === 1\">Save</button>\n          <button type=\"button\" class=\"btn btn-success\" *ngIf=\"myGlobal.myUser.accessLevel === 2\" (click)=\"OnFinish()\">Finish</button>\n          <button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 50px\" routerLink=\"/\">Cancel</button>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel !== 3\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label>Start: {{startAddress}}</label>\n            <label *ngIf=\"ride.rideStatus === 2 || ride.rideStatus === 3\">End: {{endAddress}}</label>\n            <agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n              <agm-marker\n                [latitude]=\"marker.lat\"\n                [longitude]=\"marker.lng\"\n                [label]=\"marker.label\"\n                id=\"gmApi\"\n                *ngIf=\"marker.locationChoosen\"\n                ></agm-marker>\n              <agm-marker\n                [latitude]=\"endMarker.lat\"\n                [longitude]=\"endMarker.lng\"\n                [label]=\"endMarker.label\"\n                id=\"gmApi1\"\n                *ngIf=\"endMarker.locationChoosen\"\n              ></agm-marker>\n            </agm-map>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel === 1\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"carType\">Vehicle type</label>\n            <select\n              id=\"carType\"\n              [disabled]=\"editMode\"\n              #CARTYPE>\n              <option *ngFor=\"let vehicle of vehicleType\"\n                [value]=\"vehicle\"\n                >{{vehicle}}</option>\n            </select>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-group\" *ngIf=\"ride.rideStatus === 3\">\n        <label for=\"price\">Price</label>\n        <input\n          [disabled]=\"myGlobal.myUser.accessLevel !== 2\"\n          type=\"number\"\n          id=\"price\"\n          class=\"form-control\"\n          [(ngModel)] = \"ride.price\"\n          min=\"1\"\n          max=\"5\"\n          value=\"1\"\n          name=\"price\"\n          required\n          #price=\"ngModel\">\n      </div>\n    </form>\n  </div>\n</div>\n"
+module.exports = "<div class=\"row\">\n  <div class=\"col-xs-12\">\n    <form (ngSubmit)=\"onSubmit()\">\n      <div class=\"row\">\n        <div class=\"col-xs-6\">\n          <button type=\"submit\" class=\"btn btn-success\" *ngIf=\"myGlobal.myUser.accessLevel === 1\">Save</button>\n          <button type=\"button\" class=\"btn btn-success\" *ngIf=\"myGlobal.myUser.accessLevel === 2\" (click)=\"OnFinish()\">Finish</button>\n          <button type=\"button\" class=\"btn btn-danger\" style=\"margin-left: 50px\" routerLink=\"/\">Cancel</button>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel !== 3\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label>Start: {{startAddress}}</label>\n            <label *ngIf=\"ride.rideStatus === 2 || ride.rideStatus === 3\">End: {{endAddress}}</label>\n            <agm-map [latitude]=\"marker.lat\" [longitude]=\"marker.lng\" (mapClick)=\"onClickMap($event)\" [zoom]=\"14\">\n              <agm-marker\n                [latitude]=\"marker.lat\"\n                [longitude]=\"marker.lng\"\n                [label]=\"marker.label\"\n                id=\"gmApi\"\n                *ngIf=\"marker.locationChoosen\"\n                ></agm-marker>\n              <agm-marker\n                [latitude]=\"endMarker.lat\"\n                [longitude]=\"endMarker.lng\"\n                [label]=\"endMarker.label\"\n                id=\"gmApi1\"\n                *ngIf=\"endMarker.locationChoosen\"\n              ></agm-marker>\n            </agm-map>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\" *ngIf=\"myGlobal.myUser.accessLevel === 1\">\n        <div class=\"col-xs-6\">\n          <div class=\"form-group\">\n            <label for=\"carType\">Vehicle type</label>\n            <select\n              id=\"carType\"\n              [disabled]=\"editMode\"\n              #CARTYPE>\n              <option *ngFor=\"let vehicle of vehicleType\"\n                [value]=\"vehicle\"\n                >{{vehicle}}</option>\n            </select>\n          </div>\n        </div>\n      </div>\n      <div class=\"form-group\" *ngIf=\"ride.rideStatus === 3 || ride.rideStatus === 2\">\n        <label for=\"price\">Price</label>\n        <input\n          [disabled]=\"myGlobal.myUser.accessLevel !== 2\"\n          type=\"number\"\n          id=\"price\"\n          class=\"form-control\"\n          [(ngModel)] = \"ride.price\"\n          min=\"1\"\n          max=\"5\"\n          value=\"1\"\n          name=\"price\"\n          required\n          #price=\"ngModel\">\n      </div>\n    </form>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -2426,12 +2423,11 @@ var RideListComponent = /** @class */ (function () {
     }
     RideListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.result = Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["interval"])(6000)
+        this.result = Object(rxjs__WEBPACK_IMPORTED_MODULE_5__["interval"])(1000)
             .subscribe(function (r) {
             _this.rideService.getRides()
                 .subscribe(function (data) {
                 if (data.get === 'success') {
-                    // console.log('success array size: ' + data.rides.length);
                     if (data.rides.length >= 0) {
                         _this.rides = [];
                     }
@@ -2443,21 +2439,6 @@ var RideListComponent = /** @class */ (function () {
                     _this.rides = [];
                 }
             });
-        });
-        this.rideService.getRides()
-            .subscribe(function (data) {
-            if (data.get === 'success') {
-                if (data.rides.length > 0) {
-                    _this.rides = [];
-                }
-                for (var i = 0; i < data.rides.length; ++i) {
-                    /* console.log('ride [' + i + ']: ' + JSON.stringify(data.rides[i]));*/
-                    _this.rides.push(new _models_ride_model__WEBPACK_IMPORTED_MODULE_1__["RideModel"](data.rides[i].CarType, data.rides[i].RideID, data.rides[i].TimeMade, data.rides[i].DriverID, data.rides[i].AdminName, data.rides[i].Price, data.rides[i].Comment, data.rides[i].Status, new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].StartLocation.Lat, data.rides[i].StartLocation.Lng, data.rides[i].StartLocation.StreetNumber, data.rides[i].StartLocation.StreetName, data.rides[i].StartLocation.CityName, data.rides[i].StartLocation.CityZipCode), new _models_location_model__WEBPACK_IMPORTED_MODULE_4__["LocationModel"](data.rides[i].EndLocation.Lat, data.rides[i].EndLocation.Lng, data.rides[i].EndLocation.StreetNumber, data.rides[i].EndLocation.StreetName, data.rides[i].EndLocation.CityName, data.rides[i].EndLocation.CityZipcode), data.rides[i].UserID));
-                }
-            }
-            else {
-                _this.rides = [];
-            }
         });
     };
     RideListComponent.prototype.ngOnDestroy = function () {

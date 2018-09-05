@@ -74,7 +74,9 @@ export class CommentComponent implements OnInit {
   }
 
   gradeValid() {
-    if (this.gradeInput > 5 || this.gradeInput <= 0) {
+    if (this.myGlobals.myUser.accessLevel === 2) {
+      return true;
+    } else if (this.gradeInput > 5 || this.gradeInput <= 0) {
       return false;
     } else {
       return true;
